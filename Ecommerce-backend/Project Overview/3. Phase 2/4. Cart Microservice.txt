@@ -1,0 +1,79 @@
+cart-service
+│
+├── config
+├── controller
+│   └── CartController
+│
+├── dto
+│   ├── request
+│   └── response
+│
+├── exception
+│
+├── mapper
+│   ├── CartMapper
+│   └── CartItemMapper
+│
+├── model
+│   ├── Cart
+│   └── CartItem
+│
+├── repository
+│
+├── service
+│   ├── CartService
+│   └── impl
+│
+├── util
+└── resources
+
+
+************************************************************************************************
+CartService
+addToCart(Long userId, CartRequest request);
+
+updateCartItem(Long userId, CartRequest request);
+
+removeCartItem(Long userId, Long cartItemId);
+
+clearCart(Long userId);
+
+getCart(Long userId);
+
+mergeCart(Long guestUserId, Long userId);
+
+calculateCartTotal(Long userId);
+
+expireCart(Long userId);
+
+
+************************************************************************************************
+	Cart
+cartId
+userId                  // Reference to Identity Service
+cartItems               // OneToMany
+totalItems
+totalQuantity
+totalAmount
+totalDiscount
+grandTotal
+cartStatus              // ACTIVE, CHECKED_OUT, EXPIRED (optional)
+lastActivityAt
+expiresAt
+createdAt
+updatedAt
+
+	CartItem
+cartItemId
+cart                    // ManyToOne
+productId               // Reference to Catalog Service
+productNameSnapshot
+skuSnapshot
+mainImageUrlSnapshot
+priceSnapshot
+discountSnapshot
+specialPriceSnapshot
+quantity
+lineTotal
+createdAt
+updatedAt

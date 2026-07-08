@@ -1,0 +1,82 @@
+payment-service
+│
+├── config
+│
+├── controller
+│   └── PaymentController
+│
+├── dto
+│   ├── request
+│   └── response
+│
+├── exception
+│
+├── mapper
+│   └── PaymentMapper
+│
+├── model
+│   └── Payment
+│
+├── repository
+│
+├── strategy
+│   ├── PaymentStrategy
+│   ├── CreditCardStrategy
+│   ├── UpiStrategy
+│   └── CodStrategy
+│
+├── adapter
+│   ├── PaymentGatewayAdapter
+│   ├── MockPaymentGatewayAdapter
+│   ├── CreditCardGatewayAdapter      (Future)
+│   ├── UpiGatewayAdapter             (Future)
+│   └── CodGatewayAdapter             (Optional)
+│
+├── service
+│   ├── PaymentService
+│   └── impl
+│
+├── util
+│
+└── resources
+
+
+**********************************************************************************************
+PaymentService
+initiatePayment(PaymentRequest request);
+
+processPayment(Long paymentId);
+
+refundPayment(Long paymentId);
+
+getPayment(Long paymentId);
+
+getPaymentHistory(Long userId);
+
+updatePaymentStatus(Long paymentId);
+
+processCreditCardPayment(PaymentRequest request);
+
+processUpiPayment(PaymentRequest request);
+
+processCodPayment(PaymentRequest request);
+
+
+*********************************************************************************************
+	Payment
+paymentId
+orderId                 // Reference to Order Service
+userId                  // Reference to Identity Service
+paymentMethod           // PaymentMethod Enum
+paymentStatus           // PaymentStatus Enum
+amount
+currency
+transactionId
+gatewayReferenceId      // Mock/External Gateway Transaction Id
+refundId
+refundAmount
+paymentDate
+refundDate
+failureReason
+createdAt
+updatedAt

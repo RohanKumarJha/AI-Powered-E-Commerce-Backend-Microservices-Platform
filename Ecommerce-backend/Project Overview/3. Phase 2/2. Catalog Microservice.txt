@@ -1,0 +1,169 @@
+catalog-service
+│
+├── config
+├── controller
+│   ├── ProductController
+│   ├── CategoryController
+│   ├── BrandController
+│   └── ReviewController
+│
+├── dto
+│   ├── request
+│   └── response
+│
+├── exception
+│
+├── builder
+│   └── ProductBuilder
+│
+├── mapper
+│   ├── ProductMapper
+│   ├── CategoryMapper
+│   ├── BrandMapper
+│   └── ReviewMapper
+│
+├── model
+│   ├── Product
+│   ├── Category
+│   ├── Brand
+│   └── Review
+│
+├── repository
+│
+├── specification
+│   └── ProductSpecification
+│
+├── service
+│   ├── ProductService
+│   ├── CategoryService
+│   ├── BrandService
+│   ├── ReviewService
+│   └── impl
+│
+├── util
+└── resources
+
+
+**************************************************************************************************
+2. Catalog Service
+
+ProductService
+createProduct(ProductRequest request);
+
+updateProduct(Long productId, ProductRequest request);
+
+deleteProduct(Long productId);
+
+getProductById(Long productId);
+
+getAllProducts();
+
+searchProducts(String keyword);
+
+filterProducts(ProductFilterRequest request);
+
+sortProducts(String sortBy);
+
+getProducts(int page, int size);
+
+uploadProductImage(Long productId, ImageRequest request);
+
+deleteProductImage(Long imageId);
+
+
+
+CategoryService
+createCategory(CategoryRequest request);
+
+updateCategory(Long categoryId, CategoryRequest request);
+
+deleteCategory(Long categoryId);
+
+getCategoryById(Long categoryId);
+
+getAllCategories();
+
+
+
+
+BrandService
+createBrand(BrandRequest request);
+
+updateBrand(Long brandId, BrandRequest request);
+
+deleteBrand(Long brandId);
+
+getBrandById(Long brandId);
+
+getAllBrands();
+
+
+
+
+ReviewService
+addReview(Long productId, ReviewRequest request);
+
+updateReview(Long reviewId, ReviewRequest request);
+
+deleteReview(Long reviewId);
+
+getProductReviews(Long productId);
+
+
+
+**************************************************************************************************
+	Product
+productId
+name
+description
+sku
+price
+discount
+specialPrice
+categoryId
+brandId
+sellerId              // Reference to Identity Service
+averageRating
+reviewCount
+active
+createdAt
+updatedAt
+
+	Category
+categoryId
+name
+description
+parentCategoryId      // Self Reference
+imageUrl
+active
+createdAt
+updatedAt
+
+	Brand
+brandId
+name
+description
+logoUrl
+website
+active
+createdAt
+updatedAt
+
+	ProductImage
+productImageId
+product
+imageUrl
+displayOrder
+primaryImage
+createdAt
+updatedAt
+
+	Review
+reviewId
+product
+userId              // Identity Service reference
+rating
+title
+comment
+createdAt
+updatedAt
