@@ -26,7 +26,7 @@ public class Category {
 
     // Self Reference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_categoryId")
+    @JoinColumn(name = "parent_category_id")
     private Category parentCategory;
 
     private String imageUrl;
