@@ -4,53 +4,50 @@ catalog-service
 │   ├── OpenApiConfig                    ✅ Phase 2
 │   ├── ModelMapperConfig                ✅ Phase 2
 │   ├── JacksonConfig                    📝 Future
-│   ├── ElasticsearchConfig              📝 Future
-│   └── CacheConfig                      📝 Future
+│   └── WebMvcConfig                     📝 Future
 │
 ├── controller
 │   ├── ProductController                ✅ Phase 2
 │   ├── CategoryController               ✅ Phase 2
 │   ├── BrandController                  ✅ Phase 2
-│   ├── ProductImageController           ✅ Phase 2
 │   └── ReviewController                 ✅ Phase 2
 │
 ├── dto
 │   ├── request
-│   │   ├── ProductRequest
-│   │   ├── ProductFilterRequest
-│   │   ├── CategoryRequest
-│   │   ├── BrandRequest
-│   │   ├── ReviewRequest
-│   │   └── ProductImageRequest
+│   │   ├── ProductRequest               ✅ Phase 2
+│   │   ├── CategoryRequest              ✅ Phase 2
+│   │   ├── BrandRequest                 ✅ Phase 2
+│   │   ├── ReviewRequest                ✅ Phase 2
+│   │   ├── ProductImageRequest          ✅ Phase 2
+│   │   └── ProductFilterRequest         ✅ Phase 2
 │   │
 │   └── response
-│       ├── ProductResponse
-│       ├── CategoryResponse
-│       ├── BrandResponse
-│       ├── ReviewResponse
-│       ├── ProductImageResponse
-│       ├── ApiResponse<T>
-│       └── ExceptionResponse
+│       ├── ProductResponse              ✅ Phase 2
+│       ├── CategoryResponse             ✅ Phase 2
+│       ├── BrandResponse                ✅ Phase 2
+│       ├── ReviewResponse               ✅ Phase 2
+│       ├── ProductImageResponse         ✅ Phase 2
+│       └── ExceptionResponse            ✅ Phase 2
 │
 ├── exception
-│   ├── ResourceNotFoundException
-│   ├── ResourceAlreadyExistsException
-│   ├── BadRequestException
-│   └── GlobalExceptionHandler
+│   ├── ResourceNotFoundException        ✅ Phase 2
+│   ├── ResourceAlreadyExistsException   ✅ Phase 2
+│   ├── BadRequestException              ✅ Phase 2
+│   └── GlobalExceptionHandler           ✅ Phase 2
 │
 ├── factory
-│   ├── ProductFactory
-│   ├── CategoryFactory
-│   ├── BrandFactory
-│   ├── ReviewFactory
-│   └── ProductImageFactory
+│   ├── ProductFactory                   ✅ Phase 2
+│   ├── CategoryFactory                  ✅ Phase 2
+│   ├── BrandFactory                     ✅ Phase 2
+│   ├── ReviewFactory                    ✅ Phase 2
+│   └── ProductImageFactory              ✅ Phase 2
 │
 ├── mapper
-│   ├── ProductMapper
-│   ├── CategoryMapper
-│   ├── BrandMapper
-│   ├── ReviewMapper
-│   └── ProductImageMapper
+│   ├── ProductMapper                    ✅ Phase 2
+│   ├── CategoryMapper                   ✅ Phase 2
+│   ├── BrandMapper                      ✅ Phase 2
+│   ├── ReviewMapper                     ✅ Phase 2
+│   └── ProductImageMapper               ✅ Phase 2
 │
 ├── model
 │   ├── Product
@@ -67,23 +64,20 @@ catalog-service
 │   └── ReviewRepository
 │
 ├── specification
-│   └── ProductSpecification             📝 Future
+│   └── ProductSpecification             📝 Phase 2 (Business Logic)
 │
 ├── service
-│   ├── ProductService
-│   ├── CategoryService
-│   ├── BrandService
-│   ├── ProductImageService
-│   ├── ReviewService
+│   ├── ProductService                   ✅ Phase 2
+│   ├── CategoryService                  ✅ Phase 2
+│   ├── BrandService                     ✅ Phase 2
+│   ├── ReviewService                    ✅ Phase 2
 │   └── impl
-│       ├── ProductServiceImpl
-│       ├── CategoryServiceImpl
-│       ├── BrandServiceImpl
-│       ├── ProductImageServiceImpl
-│       └── ReviewServiceImpl
+│       ├── ProductServiceImpl           ✅ Phase 2
+│       ├── CategoryServiceImpl          ✅ Phase 2
+│       ├── BrandServiceImpl             ✅ Phase 2
+│       └── ReviewServiceImpl            ✅ Phase 2
 │
-├── util
-└── resources
+└── util
 
 
 **************************************************************************************************
