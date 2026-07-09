@@ -1,14 +1,26 @@
 notification-service
 │
 ├── config
+│   ├── OpenApiConfig
+│   └── ModelMapperConfig
+│
 ├── controller
 │   └── NotificationController
 │
 ├── dto
 │   ├── request
+│   │   ├── NotificationRequest
+│   │   └── NotificationPreferenceRequest
+│   │
 │   └── response
+│       ├── NotificationResponse
+│       ├── NotificationPreferenceResponse
+│       └── ExceptionResponse
 │
 ├── exception
+│   ├── ResourceNotFoundException
+│   ├── NotificationFailedException
+│   └── GlobalExceptionHandler
 │
 ├── mapper
 │   ├── NotificationMapper
@@ -16,16 +28,38 @@ notification-service
 │
 ├── model
 │   ├── Notification
-│   └── NotificationPreference
+│   ├── NotificationPreference
+│   │
+│   └── ENUM
+│       ├── NotificationType
+│       ├── NotificationStatus
+│       └── ReferenceType
 │
 ├── repository
+│   ├── NotificationRepository
+│   └── NotificationPreferenceRepository
+│
+├── strategy
+│   ├── NotificationStrategy
+│   ├── EmailNotificationStrategy
+│   ├── SmsNotificationStrategy
+│   └── PushNotificationStrategy
+│
+├── adapter
+│   ├── NotificationProviderAdapter
+│   └── MockNotificationProviderAdapter
 │
 ├── service
 │   ├── NotificationService
+│   │
 │   └── impl
+│       └── NotificationServiceImpl
 │
 ├── util
+│
 └── resources
+    ├── application.yml
+    └── application-test.yml
 
 
 ****************************************************************************************

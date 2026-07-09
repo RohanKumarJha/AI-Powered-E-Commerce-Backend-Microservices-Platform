@@ -1,43 +1,30 @@
 payment-service
 │
 ├── config
-│
 ├── controller
 │   └── PaymentController
-│
 ├── dto
 │   ├── request
 │   └── response
-│
 ├── exception
-│
 ├── mapper
 │   └── PaymentMapper
-│
 ├── model
 │   └── Payment
-│
 ├── repository
-│
+│   └── PaymentRepository
 ├── strategy
 │   ├── PaymentStrategy
 │   ├── CreditCardStrategy
 │   ├── UpiStrategy
 │   └── CodStrategy
-│
 ├── adapter
 │   ├── PaymentGatewayAdapter
-│   ├── MockPaymentGatewayAdapter
-│   ├── CreditCardGatewayAdapter      (Future)
-│   ├── UpiGatewayAdapter             (Future)
-│   └── CodGatewayAdapter             (Optional)
-│
+│   └── MockPaymentGatewayAdapter
 ├── service
 │   ├── PaymentService
 │   └── impl
-│
-├── util
-│
+│       └── PaymentServiceImpl
 └── resources
 
 
