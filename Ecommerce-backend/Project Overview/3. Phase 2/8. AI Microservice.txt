@@ -1,16 +1,25 @@
 ai-service
 │
 ├── config
+│   ├── OpenApiConfig
+│   ├── ModelMapperConfig
+│   └── AIConfig
+│
 ├── controller
-│   └── AIController
+│   ├── RecommendationController
+│   ├── ChatController
+│   └── ReviewSummaryController
 │
 ├── dto
 │   ├── request
+│   │   ├── RecommendationRequest
+│   │   ├── ChatRequestDto
+│   │   └── ReviewSummaryRequest
+│   │
 │   └── response
-│
-├── exception
-│
-├── mapper
+│       ├── RecommendationResponse
+│       ├── ChatResponseDto
+│       └── ReviewSummaryResponse
 │
 ├── model
 │   ├── Recommendation
@@ -19,13 +28,38 @@ ai-service
 │   └── ReviewSummary
 │
 ├── repository
+│   ├── RecommendationRepository
+│   ├── ChatRequestRepository
+│   ├── ChatResponseRepository
+│   └── ReviewSummaryRepository
+│
+├── mapper
+│   ├── RecommendationMapper
+│   ├── ChatMapper
+│   └── ReviewSummaryMapper
 │
 ├── service
-│   ├── AIService
+│   ├── RecommendationService
+│   ├── ChatService
+│   ├── ReviewSummaryService
+│   │
 │   └── impl
+│       ├── RecommendationServiceImpl
+│       ├── ChatServiceImpl
+│       └── ReviewSummaryServiceImpl
 │
-├── util
-└── resources
+├── strategy
+│   ├── AIRecommendationStrategy
+│   ├── OpenAIRecommendationStrategy
+│   └── MockRecommendationStrategy
+│
+├── adapter
+│   ├── AIProviderAdapter
+│   └── OpenAIAdapter
+│
+├── exception
+│
+└── util
 
 
 *********************************************************************************************
