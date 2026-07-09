@@ -1,14 +1,26 @@
 order-service
 │
 ├── config
+│   ├── ModelMapperConfig
+│   └── OpenApiConfig
+│
 ├── controller
 │   └── OrderController
 │
 ├── dto
 │   ├── request
+│   │   ├── OrderRequest
+│   │   ├── OrderItemRequest
+│   │   └── UpdateOrderStatusRequest
+│   │
 │   └── response
+│       ├── OrderResponse
+│       ├── OrderItemResponse
+│       └── ExceptionResponse
 │
 ├── exception
+│   ├── ResourceNotFoundException
+│   └── GlobalExceptionHandler
 │
 ├── mapper
 │   ├── OrderMapper
@@ -16,9 +28,15 @@ order-service
 │
 ├── model
 │   ├── Order
-│   └── OrderItem
+│   ├── OrderItem
+│   │
+│   └── ENUM
+│       ├── OrderStatus
+│       └── PaymentMethod
 │
 ├── repository
+│   ├── OrderRepository
+│   └── OrderItemRepository
 │
 ├── state
 │   ├── OrderState
@@ -30,10 +48,18 @@ order-service
 │
 ├── service
 │   ├── OrderService
+│   ├── OrderItemService
+│   │
 │   └── impl
+│       ├── OrderServiceImpl
+│       └── OrderItemServiceImpl
 │
 ├── util
-└── resources
+│
+├── resources
+│   └── application.yml
+│
+└── OrderServiceApplication
 
 
 ************************************************************************************************
