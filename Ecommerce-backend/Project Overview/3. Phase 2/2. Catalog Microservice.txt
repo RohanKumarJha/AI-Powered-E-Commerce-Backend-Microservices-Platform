@@ -1,44 +1,86 @@
 catalog-service
 │
 ├── config
+│   ├── OpenApiConfig                    ✅ Phase 2
+│   ├── ModelMapperConfig                ✅ Phase 2
+│   ├── JacksonConfig                    📝 Future
+│   ├── ElasticsearchConfig              📝 Future
+│   └── CacheConfig                      📝 Future
+│
 ├── controller
-│   ├── ProductController
-│   ├── CategoryController
-│   ├── BrandController
-│   └── ReviewController
+│   ├── ProductController                ✅ Phase 2
+│   ├── CategoryController               ✅ Phase 2
+│   ├── BrandController                  ✅ Phase 2
+│   ├── ProductImageController           ✅ Phase 2
+│   └── ReviewController                 ✅ Phase 2
 │
 ├── dto
 │   ├── request
+│   │   ├── ProductRequest
+│   │   ├── ProductFilterRequest
+│   │   ├── CategoryRequest
+│   │   ├── BrandRequest
+│   │   ├── ReviewRequest
+│   │   └── ProductImageRequest
+│   │
 │   └── response
+│       ├── ProductResponse
+│       ├── CategoryResponse
+│       ├── BrandResponse
+│       ├── ReviewResponse
+│       ├── ProductImageResponse
+│       ├── ApiResponse<T>
+│       └── ExceptionResponse
 │
 ├── exception
+│   ├── ResourceNotFoundException
+│   ├── ResourceAlreadyExistsException
+│   ├── BadRequestException
+│   └── GlobalExceptionHandler
 │
-├── builder
-│   └── ProductBuilder
+├── factory
+│   ├── ProductFactory
+│   ├── CategoryFactory
+│   ├── BrandFactory
+│   ├── ReviewFactory
+│   └── ProductImageFactory
 │
 ├── mapper
 │   ├── ProductMapper
 │   ├── CategoryMapper
 │   ├── BrandMapper
-│   └── ReviewMapper
+│   ├── ReviewMapper
+│   └── ProductImageMapper
 │
 ├── model
 │   ├── Product
 │   ├── Category
 │   ├── Brand
+│   ├── ProductImage
 │   └── Review
 │
 ├── repository
+│   ├── ProductRepository
+│   ├── CategoryRepository
+│   ├── BrandRepository
+│   ├── ProductImageRepository
+│   └── ReviewRepository
 │
 ├── specification
-│   └── ProductSpecification
+│   └── ProductSpecification             📝 Future
 │
 ├── service
 │   ├── ProductService
 │   ├── CategoryService
 │   ├── BrandService
+│   ├── ProductImageService
 │   ├── ReviewService
 │   └── impl
+│       ├── ProductServiceImpl
+│       ├── CategoryServiceImpl
+│       ├── BrandServiceImpl
+│       ├── ProductImageServiceImpl
+│       └── ReviewServiceImpl
 │
 ├── util
 └── resources
