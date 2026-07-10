@@ -37,24 +37,13 @@ public class RoleController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/assign/{userId}/{roleId}")
-    public ResponseEntity<RoleResponse> assignRole(
-            @PathVariable Long userId,
-            @PathVariable Long roleId) {
-
-        return ResponseEntity.ok(roleService.assignRole(userId, roleId));
-    }
-
-    @PutMapping("/remove/{userId}/{roleId}")
-    public ResponseEntity<RoleResponse> removeRole(
-            @PathVariable Long userId,
-            @PathVariable Long roleId) {
-
-        return ResponseEntity.ok(roleService.removeRole(userId, roleId));
-    }
-
     @GetMapping
     public ResponseEntity<List<RoleResponse>> getAllRoles() {
         return ResponseEntity.ok(roleService.getAllRoles());
+    }
+
+    @GetMapping("/{roleId}")
+    public ResponseEntity<RoleResponse> getRoleById(@PathVariable Long roleId) {
+        return ResponseEntity.ok(roleService.getRoleById(roleId));
     }
 }

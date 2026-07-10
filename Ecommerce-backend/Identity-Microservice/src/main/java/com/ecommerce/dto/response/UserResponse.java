@@ -1,10 +1,8 @@
 package com.ecommerce.dto.response;
 
-import com.ecommerce.model.ENUM.RoleType;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -25,10 +23,9 @@ public class UserResponse {
 
     private Boolean enabled;
 
-    private Set<RoleResponse> roles;
+    private RoleResponse role;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
 }

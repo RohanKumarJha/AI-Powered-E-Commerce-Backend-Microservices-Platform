@@ -13,10 +13,8 @@ public interface RoleService {
 
     void deleteRole(Long roleId);
 
-    RoleResponse assignRole(Long userId, Long roleId);
-
-    RoleResponse removeRole(Long userId, Long roleId);
-
     List<RoleResponse> getAllRoles();
+
+    RoleResponse getRoleById(Long roleId);
 
 }

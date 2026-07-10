@@ -3,7 +3,7 @@ ai-service
 ├── config
 │   ├── OpenApiConfig
 │   ├── ModelMapperConfig
-│   └── AIConfig
+│   └── AIConfig (Future - API keys, AI provider config)
 │
 ├── controller
 │   ├── RecommendationController
@@ -19,7 +19,18 @@ ai-service
 │   └── response
 │       ├── RecommendationResponse
 │       ├── ChatResponseDto
-│       └── ReviewSummaryResponse
+│       ├── ReviewSummaryResponse
+│       └── ExceptionResponse
+│
+├── exception
+│   ├── ResourceNotFoundException
+│   ├── AIProviderException
+│   └── GlobalExceptionHandler
+│
+├── mapper
+│   ├── RecommendationMapper
+│   ├── ChatMapper
+│   └── ReviewSummaryMapper
 │
 ├── model
 │   ├── Recommendation
@@ -33,10 +44,17 @@ ai-service
 │   ├── ChatResponseRepository
 │   └── ReviewSummaryRepository
 │
-├── mapper
-│   ├── RecommendationMapper
-│   ├── ChatMapper
-│   └── ReviewSummaryMapper
+├── strategy
+│   ├── AIRecommendationStrategy
+│   ├── OpenAIRecommendationStrategy
+│   └── MockRecommendationStrategy
+│
+├── factory
+│   └── AIRecommendationStrategyFactory
+│
+├── adapter
+│   ├── AIProviderAdapter
+│   └── MockAIProviderAdapter
 │
 ├── service
 │   ├── RecommendationService
@@ -48,18 +66,13 @@ ai-service
 │       ├── ChatServiceImpl
 │       └── ReviewSummaryServiceImpl
 │
-├── strategy
-│   ├── AIRecommendationStrategy
-│   ├── OpenAIRecommendationStrategy
-│   └── MockRecommendationStrategy
+├── util
+│   └── Constants (Future)
 │
-├── adapter
-│   ├── AIProviderAdapter
-│   └── OpenAIAdapter
-│
-├── exception
-│
-└── util
+├── resources
+    ├── application.yml
+    └── data.sql (Optional)
+
 
 
 *********************************************************************************************

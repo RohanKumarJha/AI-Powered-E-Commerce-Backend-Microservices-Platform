@@ -1,9 +1,6 @@
 package com.ecommerce.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -35,4 +32,7 @@ public class RegisterRequest {
             message = "Phone number must be a valid 10-digit Indian mobile number"
     )
     private String phoneNumber;
+
+    @NotNull(message = "Role ID is required")
+    private Long roleId;
 }

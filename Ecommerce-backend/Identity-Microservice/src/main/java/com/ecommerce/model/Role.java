@@ -32,7 +32,7 @@ public class Role {
     @Column(length = 255)
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     @Builder.Default
     private Set<User> users = new HashSet<>();
 

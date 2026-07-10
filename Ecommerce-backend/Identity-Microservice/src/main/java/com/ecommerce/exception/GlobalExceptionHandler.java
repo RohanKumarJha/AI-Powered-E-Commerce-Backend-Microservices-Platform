@@ -17,16 +17,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException ex,
             HttpServletRequest request) {
-
         StringBuilder message = new StringBuilder();
-
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 message.append(error.getField())
                         .append(": ")
                         .append(error.getDefaultMessage())
                         .append("; ")
         );
-
         ExceptionResponse response = ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -34,7 +31,6 @@ public class GlobalExceptionHandler {
                 .message(message.toString())
                 .path(request.getRequestURI())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -42,7 +38,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(
             ResourceNotFoundException ex,
             HttpServletRequest request) {
-
         ExceptionResponse response = ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())
@@ -50,7 +45,6 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -58,7 +52,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleResourceAlreadyExistsException(
             ResourceAlreadyExistsException ex,
             HttpServletRequest request) {
-
         ExceptionResponse response = ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.CONFLICT.value())
@@ -66,7 +59,6 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
