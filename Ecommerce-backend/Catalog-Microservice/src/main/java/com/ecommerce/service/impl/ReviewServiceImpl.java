@@ -6,6 +6,7 @@ import com.ecommerce.factory.ReviewFactory;
 import com.ecommerce.mapper.ReviewMapper;
 import com.ecommerce.model.Product;
 import com.ecommerce.model.Review;
+import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.repository.ReviewRepository;
 import com.ecommerce.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final ProductRepository productRepository;
     private final ReviewFactory reviewFactory;
     private final ReviewMapper reviewMapper;
 
@@ -32,12 +34,13 @@ public class ReviewServiceImpl implements ReviewService {
         );
 
         Review review = reviewFactory.create(request);
-
         review.setProduct(product);
 
-        return reviewMapper.toResponse(
-                reviewRepository.save(review)
-        );
+        Review savedReview = reviewRepository.save(review);
+
+        updateProductRating(product);
+
+        return reviewMapper.toResponse(savedReview);
     }
 
     @Override
@@ -48,9 +51,11 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewMapper.updateFromRequest(request, review);
 
-        return reviewMapper.toResponse(
-                reviewRepository.save(review)
-        );
+        Review updatedReview = reviewRepository.save(review);
+
+        updateProductRating(review.getProduct());
+
+        return reviewMapper.toResponse(updatedReview);
     }
 
     @Override
@@ -58,7 +63,11 @@ public class ReviewServiceImpl implements ReviewService {
 
         Review review = reviewFactory.getReview(reviewId);
 
+        Product product = review.getProduct();
+
         reviewRepository.delete(review);
+
+        updateProductRating(product);
     }
 
     @Override
@@ -72,4 +81,18 @@ public class ReviewServiceImpl implements ReviewService {
                 .toList();
     }
 
+// ************************ Helper Method ********************************
+    private void updateProductRating(Product product) {
+        List<Review> reviews = reviewRepository.findByProduct(product);
+        int reviewCount = reviews.size();
+        double averageRating = reviews.stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0);
+
+        product.setReviewCount(reviewCount);
+        product.setAverageRating(averageRating);
+
+        productRepository.save(product);
+    }
 }

@@ -1,8 +1,6 @@
 inventory-service
 │
 ├── config
-│   ├── ModelMapperConfig
-│   └── OpenApiConfig
 │
 ├── controller
 │   └── InventoryController
@@ -14,20 +12,20 @@ inventory-service
 │   │   └── UpdateStockRequest
 │   │
 │   └── response
-│       └── InventoryResponse
+│       ├── InventoryResponse
+│       ├── ExceptionResponse
+│       └── PageResponse<T>
 │
 ├── exception
-│   ├── ExceptionResponse
-│   ├── GlobalExceptionHandler
-│   └── InventoryNotFoundException
+│
+├── factory
+│   └── InventoryFactory
 │
 ├── mapper
 │   └── InventoryMapper
 │
 ├── model
-│   ├── Inventory
-│   └── ENUM
-│       └── InventoryStatus
+│   └── Inventory
 │
 ├── repository
 │   └── InventoryRepository
@@ -37,9 +35,10 @@ inventory-service
 │   └── impl
 │       └── InventoryServiceImpl
 │
-├── util
-│
-└── InventoryServiceApplication
+└── util
+    ├── PageRequestUtil
+    ├── PageResponseUtil
+    └── UserContext
 
 
 ********************************************************************************************

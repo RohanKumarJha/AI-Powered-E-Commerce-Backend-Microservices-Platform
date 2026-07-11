@@ -24,7 +24,8 @@ public class InventoryMapper {
         return modelMapper.map(inventory, InventoryResponse.class);
     }
 
-    public void updateEntity(UpdateInventoryRequest request, Inventory inventory) {
+    public void updateEntity(UpdateInventoryRequest request,
+                             Inventory inventory) {
         modelMapper.map(request, inventory);
     }
 }

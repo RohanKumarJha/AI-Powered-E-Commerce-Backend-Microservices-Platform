@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Inventory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long inventoryId;
@@ -21,7 +22,7 @@ public class Inventory {
     @Column(nullable = false, unique = true)
     private Long productId;
 
-    // Product SKU snapshot (optional)
+    // Product SKU Snapshot
     @Column(nullable = false, unique = true, length = 100)
     private String sku;
 
@@ -44,6 +45,13 @@ public class Inventory {
     @Column(nullable = false)
     @Builder.Default
     private Boolean active = true;
+
+    // Audit Fields
+    @Column(nullable = false, updatable = false)
+    private Long createdBy;
+
+    @Column(nullable = false)
+    private Long updatedBy;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
