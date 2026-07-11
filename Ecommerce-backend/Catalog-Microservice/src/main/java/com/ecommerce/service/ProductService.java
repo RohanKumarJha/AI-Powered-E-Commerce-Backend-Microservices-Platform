@@ -5,6 +5,7 @@ import com.ecommerce.dto.request.ProductImageRequest;
 import com.ecommerce.dto.request.ProductRequest;
 import com.ecommerce.dto.response.ProductImageResponse;
 import com.ecommerce.dto.response.ProductResponse;
+import com.ecommerce.dto.response.PageResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,11 +20,22 @@ public interface ProductService {
 
     ProductResponse getProductById(Long productId);
 
-    List<ProductResponse> getAllProducts();
+    PageResponse<ProductResponse> getAllProducts(Integer page,
+                                                 Integer size,
+                                                 String sortBy,
+                                                 String sortDir);
 
-    List<ProductResponse> searchProducts(String keyword);
+    PageResponse<ProductResponse> searchProducts(String keyword,
+                                                 Integer page,
+                                                 Integer size,
+                                                 String sortBy,
+                                                 String sortDir);
 
-    List<ProductResponse> filterProducts(ProductFilterRequest request);
+    PageResponse<ProductResponse> filterProducts(ProductFilterRequest request,
+                                                 Integer page,
+                                                 Integer size,
+                                                 String sortBy,
+                                                 String sortDir);
 
     List<ProductResponse> sortProducts(String sortBy);
 

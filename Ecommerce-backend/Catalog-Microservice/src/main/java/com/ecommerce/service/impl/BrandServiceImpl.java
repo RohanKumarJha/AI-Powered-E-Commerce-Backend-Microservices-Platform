@@ -2,35 +2,85 @@ package com.ecommerce.service.impl;
 
 import com.ecommerce.dto.request.BrandRequest;
 import com.ecommerce.dto.response.BrandResponse;
+import com.ecommerce.exception.BadRequestException;
+import com.ecommerce.factory.BrandFactory;
+import com.ecommerce.mapper.BrandMapper;
+import com.ecommerce.model.Brand;
+import com.ecommerce.repository.BrandRepository;
+import com.ecommerce.service.BrandReferenceService;
 import com.ecommerce.service.BrandService;
+import com.ecommerce.util.UserContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
+
+    private final BrandRepository brandRepository;
+    private final BrandFactory brandFactory;
+    private final BrandMapper brandMapper;
+    private final BrandReferenceService brandReferenceService;
+
     @Override
     public BrandResponse createBrand(BrandRequest request) {
-        return null;
+
+        Brand brand = brandFactory.create(request);
+
+        Long userId = UserContext.getCurrentUserId();
+        brand.setCreatedBy(userId);
+        brand.setUpdatedBy(userId);
+
+        return brandMapper.toResponse(brandRepository.save(brand));
     }
 
     @Override
     public BrandResponse updateBrand(Long brandId, BrandRequest request) {
-        return null;
+
+        Brand brand = brandFactory.getById(brandId);
+
+        brandFactory.validateBrandNameForUpdate(
+                brandId,
+                request.getName()
+        );
+
+        brandMapper.updateFromRequest(request, brand);
+
+        brand.setUpdatedBy(UserContext.getCurrentUserId());
+
+        return brandMapper.toResponse(brandRepository.save(brand));
     }
 
     @Override
     public void deleteBrand(Long brandId) {
 
+        Brand brand = brandFactory.getById(brandId);
+
+        if (brandReferenceService.isBrandInUse(brandId)) {
+            throw new BadRequestException(
+                    "Brand cannot be deleted because it is associated with one or more products."
+            );
+        }
+
+        brandRepository.delete(brand);
     }
 
     @Override
     public BrandResponse getBrandById(Long brandId) {
-        return null;
+
+        Brand brand = brandFactory.getById(brandId);
+
+        return brandMapper.toResponse(brand);
     }
 
     @Override
     public List<BrandResponse> getAllBrands() {
-        return List.of();
+
+        return brandRepository.findAll()
+                .stream()
+                .map(brandMapper::toResponse)
+                .toList();
     }
 }

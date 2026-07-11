@@ -45,9 +45,5 @@ public class ProductRequest {
     @Positive(message = "Brand ID must be greater than 0.")
     private Long brandId;
 
-    @NotNull(message = "Seller ID is required.")
-    @Positive(message = "Seller ID must be greater than 0.")
-    private Long sellerId;
-
     private Boolean active;
 }

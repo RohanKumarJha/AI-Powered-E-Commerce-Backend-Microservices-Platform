@@ -5,13 +5,11 @@ import com.ecommerce.dto.request.ProductImageRequest;
 import com.ecommerce.dto.request.ProductRequest;
 import com.ecommerce.dto.response.ProductImageResponse;
 import com.ecommerce.dto.response.ProductResponse;
+import com.ecommerce.dto.response.PageResponse;
 import com.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -42,29 +40,32 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductResponse> getAllProducts() {
-        return productService.getAllProducts();
+    public PageResponse<ProductResponse> getAllProducts(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir) {
+        return productService.getAllProducts(page, size, sortBy, sortDir);
     }
 
     @GetMapping("/search")
-    public List<ProductResponse> searchProducts(@RequestParam String keyword) {
-        return productService.searchProducts(keyword);
+    public PageResponse<ProductResponse> searchProducts(
+            @RequestParam String keyword,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir) {
+        return productService.searchProducts(keyword, page, size, sortBy, sortDir);
     }
 
     @PostMapping("/filter")
-    public List<ProductResponse> filterProducts(@RequestBody ProductFilterRequest request) {
-        return productService.filterProducts(request);
-    }
-
-    @GetMapping("/sort")
-    public List<ProductResponse> sortProducts(@RequestParam String sortBy) {
-        return productService.sortProducts(sortBy);
-    }
-
-    @GetMapping("/page")
-    public Page<ProductResponse> getProducts(@RequestParam int page,
-                                             @RequestParam int size) {
-        return productService.getProducts(page, size);
+    public PageResponse<ProductResponse> filterProducts(
+            @RequestBody ProductFilterRequest request,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir) {
+        return productService.filterProducts(request, page, size, sortBy, sortDir);
     }
 
     @PostMapping("/{productId}/images")

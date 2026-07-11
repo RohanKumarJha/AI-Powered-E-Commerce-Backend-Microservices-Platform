@@ -23,6 +23,10 @@ public class CategoryResponse {
 
     private Boolean active;
 
+    private Long createdBy;
+
+    private Long updatedBy;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

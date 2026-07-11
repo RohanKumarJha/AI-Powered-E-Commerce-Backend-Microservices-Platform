@@ -9,8 +9,7 @@ import java.util.List;
 
 
 @Component
-public class MockAIProviderAdapter
-        implements AIProviderAdapter {
+public class MockAIProviderAdapter implements AIProviderAdapter {
 
 
     @Override
