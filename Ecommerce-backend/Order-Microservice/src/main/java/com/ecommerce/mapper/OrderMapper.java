@@ -12,12 +12,28 @@ import org.springframework.stereotype.Component;
 public class OrderMapper {
 
     private final ModelMapper modelMapper;
+    private final OrderItemMapper orderItemMapper;
 
     public Order toEntity(OrderRequest request) {
         return modelMapper.map(request, Order.class);
     }
 
     public OrderResponse toResponse(Order order) {
-        return modelMapper.map(order, OrderResponse.class);
+
+        OrderResponse response = modelMapper.map(order, OrderResponse.class);
+
+        response.setOrderStatus(order.getStatus());
+
+        response.setItems(
+                order.getOrderItems()
+                        .stream()
+                        .map(orderItemMapper::toResponse)
+                        .toList()
+        );
+
+        // Cart is not stored after checkout
+        response.setCartId(null);
+
+        return response;
     }
 }

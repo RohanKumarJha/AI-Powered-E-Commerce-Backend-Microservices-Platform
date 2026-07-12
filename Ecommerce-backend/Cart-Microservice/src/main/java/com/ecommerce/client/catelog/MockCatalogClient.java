@@ -1,6 +1,6 @@
-package com.ecommerce.service.client;
+package com.ecommerce.client.catelog;
 
-import com.ecommerce.dto.client.ProductResponse;
+import com.ecommerce.client.product.ProductResponse;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

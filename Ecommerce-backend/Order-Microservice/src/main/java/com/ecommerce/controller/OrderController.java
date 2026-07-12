@@ -3,14 +3,13 @@ package com.ecommerce.controller;
 import com.ecommerce.dto.request.OrderRequest;
 import com.ecommerce.dto.request.UpdateOrderStatusRequest;
 import com.ecommerce.dto.response.OrderResponse;
+import com.ecommerce.dto.response.PageResponse;
 import com.ecommerce.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/orders")
@@ -27,13 +26,22 @@ public class OrderController {
                 HttpStatus.CREATED);
     }
 
-
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getAllOrders() {
-        return ResponseEntity.ok(
-                orderService.getAllOrders());
-    }
+    public ResponseEntity<PageResponse<OrderResponse>> getAllOrders(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir) {
 
+        return ResponseEntity.ok(
+                orderService.getAllOrders(
+                        page,
+                        size,
+                        sortBy,
+                        sortDir
+                )
+        );
+    }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrderById(
@@ -44,10 +52,22 @@ public class OrderController {
 
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<OrderResponse>> getOrdersByUserId(
-            @PathVariable Long userId) {
+    public ResponseEntity<PageResponse<OrderResponse>> getOrdersByUserId(
+            @PathVariable Long userId,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir) {
+
         return ResponseEntity.ok(
-                orderService.getOrdersByUserId(userId));
+                orderService.getOrdersByUserId(
+                        userId,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir
+                )
+        );
     }
 
 

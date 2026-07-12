@@ -13,9 +13,11 @@ public class ExceptionResponse {
 
     private LocalDateTime timestamp;
 
+    private Integer status;
+
+    private String error;
+
     private String message;
 
-    private String details;
-
-    private String errorCode;
+    private String path;
 }

@@ -12,8 +12,7 @@ import com.ecommerce.repository.InventoryRepository;
 import com.ecommerce.service.InventoryService;
 import com.ecommerce.util.PageRequestUtil;
 import com.ecommerce.util.PageResponseUtil;
-import com.ecommerce.util.ProductContext;
-import com.ecommerce.util.UserContext;
+import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -31,23 +30,14 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public InventoryResponse createInventory(InventoryRequest request) {
 
-        Long productId = ProductContext.getProductId();
-
-        request.setProductId(productId);
-
-
         Inventory inventory = inventoryFactory.create(request);
-
 
         Long userId = UserContext.getCurrentUserId();
 
         inventory.setCreatedBy(userId);
         inventory.setUpdatedBy(userId);
 
-
-        Inventory savedInventory =
-                inventoryRepository.save(inventory);
-
+        Inventory savedInventory = inventoryRepository.save(inventory);
 
         return inventoryMapper.toResponse(savedInventory);
     }

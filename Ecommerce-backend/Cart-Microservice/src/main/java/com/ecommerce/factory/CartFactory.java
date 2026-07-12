@@ -4,7 +4,7 @@ import com.ecommerce.exception.ResourceAlreadyExistsException;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.model.Cart;
 import com.ecommerce.repository.CartRepository;
-import com.ecommerce.util.UserContext;
+import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

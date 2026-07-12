@@ -9,7 +9,7 @@ import com.ecommerce.model.Brand;
 import com.ecommerce.repository.BrandRepository;
 import com.ecommerce.service.BrandReferenceService;
 import com.ecommerce.service.BrandService;
-import com.ecommerce.util.UserContext;
+import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

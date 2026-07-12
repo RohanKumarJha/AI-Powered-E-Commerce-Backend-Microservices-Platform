@@ -1,4 +1,4 @@
-package com.ecommerce.dto.client;
+package com.ecommerce.client.product;
 
 import lombok.*;
 

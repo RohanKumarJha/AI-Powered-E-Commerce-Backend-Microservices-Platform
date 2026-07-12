@@ -1,6 +1,6 @@
 package com.ecommerce.service.impl;
 
-import com.ecommerce.service.client.InventoryClient;
+import com.ecommerce.client.inventory.InventoryClient;
 import com.ecommerce.dto.request.CartItemRequest;
 import com.ecommerce.dto.request.UpdateCartItemQuantityRequest;
 import com.ecommerce.dto.response.CartItemResponse;

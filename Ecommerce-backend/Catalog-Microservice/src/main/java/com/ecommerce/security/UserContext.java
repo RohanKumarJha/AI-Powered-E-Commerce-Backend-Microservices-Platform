@@ -1,4 +1,4 @@
-package com.ecommerce.util;
+package com.ecommerce.security;
 
 public final class UserContext {
 

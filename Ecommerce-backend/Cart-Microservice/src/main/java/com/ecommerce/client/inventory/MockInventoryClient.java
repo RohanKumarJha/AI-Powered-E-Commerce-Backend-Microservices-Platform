@@ -1,4 +1,4 @@
-package com.ecommerce.service.client;
+package com.ecommerce.client.inventory;
 
 import org.springframework.stereotype.Service;
 

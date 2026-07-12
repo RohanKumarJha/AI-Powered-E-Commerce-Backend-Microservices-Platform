@@ -16,7 +16,7 @@ import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.service.ProductService;
 import com.ecommerce.dto.response.PageResponse;
 import com.ecommerce.specification.ProductSpecification;
-import com.ecommerce.util.UserContext;
+import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import com.ecommerce.util.PageRequestUtil;

@@ -8,7 +8,7 @@ import com.ecommerce.mapper.CategoryMapper;
 import com.ecommerce.model.Category;
 import com.ecommerce.repository.CategoryRepository;
 import com.ecommerce.service.CategoryService;
-import com.ecommerce.util.UserContext;
+import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

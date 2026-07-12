@@ -1,4 +1,4 @@
-package com.ecommerce.service.client;
+package com.ecommerce.client.inventory;
 
 public interface InventoryClient {
 
