@@ -26,6 +26,7 @@ public class Cart {
     private Long userId;
 
     @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,orphanRemoval = true)
+    @Builder.Default
     private Set<CartItem> cartItems = new HashSet<>();
 
     @Builder.Default

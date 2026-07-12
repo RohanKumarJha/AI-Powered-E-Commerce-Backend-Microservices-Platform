@@ -16,9 +16,21 @@ public class CartItemResponse {
 
     private Long productId;
 
+    private String productNameSnapshot;
+
+    private String skuSnapshot;
+
+    private String mainImageUrlSnapshot;
+
+    private BigDecimal priceSnapshot;
+
+    private BigDecimal discountSnapshot;
+
+    private BigDecimal specialPriceSnapshot;
+
     private Integer quantity;
 
-    private BigDecimal price;
+    private BigDecimal lineTotal;
 
     private LocalDateTime createdAt;
 

@@ -11,6 +11,6 @@ import lombok.*;
 @Builder
 public class UpdateOrderStatusRequest {
 
-    @NotNull(message = "Order status is required")
+    @NotNull(message = "Order status is required.")
     private OrderStatus orderStatus;
 }

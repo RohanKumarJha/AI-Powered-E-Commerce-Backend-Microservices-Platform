@@ -3,6 +3,7 @@ package com.ecommerce.dto.response;
 import com.ecommerce.model.ENUM.CartStatus;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,9 +18,23 @@ public class CartResponse {
 
     private Long userId;
 
-    private CartStatus status;
+    private Integer totalItems;
 
-    private List<CartItemResponse> items;
+    private Integer totalQuantity;
+
+    private BigDecimal totalAmount;
+
+    private BigDecimal totalDiscount;
+
+    private BigDecimal grandTotal;
+
+    private CartStatus cartStatus;
+
+    private List<CartItemResponse> cartItems;
+
+    private LocalDateTime lastActivityAt;
+
+    private LocalDateTime expiresAt;
 
     private LocalDateTime createdAt;
 

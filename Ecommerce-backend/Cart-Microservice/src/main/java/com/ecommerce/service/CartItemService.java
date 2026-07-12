@@ -14,10 +14,7 @@ public interface CartItemService {
 
     CartItemResponse getItemById(Long cartItemId);
 
-    CartItemResponse updateQuantity(
-            Long cartItemId,
-            UpdateCartItemQuantityRequest request
-    );
+    CartItemResponse updateQuantity(Long cartItemId, UpdateCartItemQuantityRequest request);
 
     void removeItem(Long cartItemId);
 }

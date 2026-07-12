@@ -1,5 +1,6 @@
 package com.ecommerce.dto.request;
 
+import com.ecommerce.model.ENUM.PaymentMethod;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -10,9 +11,12 @@ import lombok.*;
 @Builder
 public class OrderRequest {
 
-    @NotNull(message = "User id is required")
+    @NotNull(message = "User ID is required.")
     private Long userId;
 
-    @NotNull(message = "Cart id is required")
-    private Long cartId;
+    @NotNull(message = "Address ID is required.")
+    private Long addressId;
+
+    @NotNull(message = "Payment method is required.")
+    private PaymentMethod paymentMethod;
 }
