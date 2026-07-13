@@ -5,7 +5,7 @@ import com.ecommerce.dto.request.UpdateInventoryRequest;
 import com.ecommerce.dto.request.UpdateStockRequest;
 import com.ecommerce.dto.response.InventoryResponse;
 import com.ecommerce.dto.response.PageResponse;
-import com.ecommerce.factory.InventoryFactory;
+import com.ecommerce.service.factory.InventoryFactory;
 import com.ecommerce.mapper.InventoryMapper;
 import com.ecommerce.model.Inventory;
 import com.ecommerce.repository.InventoryRepository;

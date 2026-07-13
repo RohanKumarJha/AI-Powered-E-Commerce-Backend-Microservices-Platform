@@ -5,7 +5,7 @@ import com.ecommerce.dto.request.UpdateUserRequest;
 import com.ecommerce.dto.response.UserResponse;
 import com.ecommerce.exception.ResourceAlreadyExistsException;
 import com.ecommerce.exception.ResourceNotFoundException;
-import com.ecommerce.factory.UserFactory;
+import com.ecommerce.service.factory.UserFactory;
 import com.ecommerce.mapper.UserMapper;
 import com.ecommerce.model.Role;
 import com.ecommerce.model.User;

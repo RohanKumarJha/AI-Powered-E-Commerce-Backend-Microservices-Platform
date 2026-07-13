@@ -3,7 +3,7 @@ package com.ecommerce.service.impl;
 import com.ecommerce.dto.request.CategoryRequest;
 import com.ecommerce.dto.response.CategoryResponse;
 import com.ecommerce.exception.BadRequestException;
-import com.ecommerce.factory.CategoryFactory;
+import com.ecommerce.service.factory.CategoryFactory;
 import com.ecommerce.mapper.CategoryMapper;
 import com.ecommerce.model.Category;
 import com.ecommerce.repository.CategoryRepository;

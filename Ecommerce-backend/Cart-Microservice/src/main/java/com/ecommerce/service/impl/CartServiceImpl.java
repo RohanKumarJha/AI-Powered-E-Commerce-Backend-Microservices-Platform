@@ -3,7 +3,7 @@ package com.ecommerce.service.impl;
 import com.ecommerce.dto.request.UpdateCartStatusRequest;
 import com.ecommerce.dto.response.CartResponse;
 import com.ecommerce.dto.response.PageResponse;
-import com.ecommerce.factory.CartFactory;
+import com.ecommerce.service.factory.CartFactory;
 import com.ecommerce.mapper.CartMapper;
 import com.ecommerce.model.Cart;
 import com.ecommerce.repository.CartRepository;

@@ -4,7 +4,7 @@ import com.ecommerce.client.inventory.InventoryClient;
 import com.ecommerce.dto.request.CartItemRequest;
 import com.ecommerce.dto.request.UpdateCartItemQuantityRequest;
 import com.ecommerce.dto.response.CartItemResponse;
-import com.ecommerce.factory.CartItemFactory;
+import com.ecommerce.service.factory.CartItemFactory;
 import com.ecommerce.mapper.CartItemMapper;
 import com.ecommerce.model.Cart;
 import com.ecommerce.model.CartItem;

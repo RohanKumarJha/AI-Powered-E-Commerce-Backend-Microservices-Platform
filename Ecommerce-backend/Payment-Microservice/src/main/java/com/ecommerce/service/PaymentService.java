@@ -2,34 +2,37 @@ package com.ecommerce.service;
 
 import com.ecommerce.dto.request.PaymentRequest;
 import com.ecommerce.dto.request.RefundRequest;
+import com.ecommerce.dto.response.PageResponse;
 import com.ecommerce.dto.response.PaymentResponse;
-
-import java.util.List;
+import com.ecommerce.dto.response.PaymentStatisticsResponse;
 
 public interface PaymentService {
 
+    PaymentResponse createPayment(PaymentRequest request);
 
-    PaymentResponse createPayment(
-            PaymentRequest request
+    PaymentResponse getPaymentById(Long paymentId);
+
+    PaymentResponse getPaymentByOrderId(Long orderId);
+
+    PageResponse<PaymentResponse> getAllPayments(
+            int page,
+            int size,
+            String sortBy,
+            String direction
     );
 
-
-    PaymentResponse getPaymentById(
-            Long paymentId
+    PageResponse<PaymentResponse> getMyPayments(
+            int page,
+            int size,
+            String sortBy,
+            String direction
     );
-
-
-    PaymentResponse getPaymentByOrderId(
-            Long orderId
-    );
-
-
-    List<PaymentResponse> getAllPayments();
-
 
     PaymentResponse refundPayment(
             Long paymentId,
             RefundRequest request
     );
+
+    PaymentStatisticsResponse getPaymentStatistics();
 
 }

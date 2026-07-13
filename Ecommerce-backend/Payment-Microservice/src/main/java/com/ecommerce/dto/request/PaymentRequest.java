@@ -14,18 +14,11 @@ import java.math.BigDecimal;
 @Builder
 public class PaymentRequest {
 
-
     @NotNull(message = "Order id is required")
     private Long orderId;
 
-
-    @NotNull(message = "User id is required")
-    private Long userId;
-
-
     @NotNull(message = "Payment method is required")
     private PaymentMethod paymentMethod;
-
 
     @NotNull(message = "Payment amount is required")
     @DecimalMin(

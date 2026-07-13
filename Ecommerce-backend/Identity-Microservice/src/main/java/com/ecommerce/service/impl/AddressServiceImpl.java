@@ -2,8 +2,8 @@ package com.ecommerce.service.impl;
 
 import com.ecommerce.dto.request.AddressRequest;
 import com.ecommerce.dto.response.AddressResponse;
-import com.ecommerce.factory.AddressFactory;
-import com.ecommerce.factory.UserFactory;
+import com.ecommerce.service.factory.AddressFactory;
+import com.ecommerce.service.factory.UserFactory;
 import com.ecommerce.mapper.AddressMapper;
 import com.ecommerce.model.Address;
 import com.ecommerce.model.User;

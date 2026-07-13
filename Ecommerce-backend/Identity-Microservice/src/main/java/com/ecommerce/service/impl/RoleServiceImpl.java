@@ -3,7 +3,7 @@ package com.ecommerce.service.impl;
 import com.ecommerce.dto.request.RoleRequest;
 import com.ecommerce.dto.response.RoleResponse;
 import com.ecommerce.exception.ResourceAlreadyExistsException;
-import com.ecommerce.factory.RoleFactory;
+import com.ecommerce.service.factory.RoleFactory;
 import com.ecommerce.mapper.RoleMapper;
 import com.ecommerce.model.Role;
 import com.ecommerce.repository.RoleRepository;

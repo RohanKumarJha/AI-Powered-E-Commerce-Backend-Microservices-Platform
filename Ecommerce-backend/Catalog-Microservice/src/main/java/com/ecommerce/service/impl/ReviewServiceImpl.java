@@ -2,7 +2,7 @@ package com.ecommerce.service.impl;
 
 import com.ecommerce.dto.request.ReviewRequest;
 import com.ecommerce.dto.response.ReviewResponse;
-import com.ecommerce.factory.ReviewFactory;
+import com.ecommerce.service.factory.ReviewFactory;
 import com.ecommerce.mapper.ReviewMapper;
 import com.ecommerce.model.Product;
 import com.ecommerce.model.Review;

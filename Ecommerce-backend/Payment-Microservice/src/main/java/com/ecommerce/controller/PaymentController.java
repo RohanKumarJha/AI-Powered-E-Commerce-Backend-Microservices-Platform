@@ -1,25 +1,18 @@
 package com.ecommerce.controller;
 
-
 import com.ecommerce.dto.request.PaymentRequest;
 import com.ecommerce.dto.request.RefundRequest;
+import com.ecommerce.dto.response.PageResponse;
 import com.ecommerce.dto.response.PaymentResponse;
+import com.ecommerce.dto.response.PaymentStatisticsResponse;
 import com.ecommerce.service.PaymentService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import jakarta.validation.Valid;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/v1/payments")
@@ -30,10 +23,7 @@ import java.util.List;
 )
 public class PaymentController {
 
-
     private final PaymentService paymentService;
-
-
 
     @PostMapping
     @Operation(
@@ -51,8 +41,6 @@ public class PaymentController {
 
     }
 
-
-
     @GetMapping("/{paymentId}")
     @Operation(
             summary = "Get payment by id"
@@ -66,8 +54,6 @@ public class PaymentController {
         );
 
     }
-
-
 
     @GetMapping("/order/{orderId}")
     @Operation(
@@ -83,22 +69,65 @@ public class PaymentController {
 
     }
 
-
-
     @GetMapping
     @Operation(
             summary = "Get all payments"
     )
-    public ResponseEntity<List<PaymentResponse>> getAllPayments() {
+    public ResponseEntity<PageResponse<PaymentResponse>> getAllPayments(
 
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "createdAt")
+            String sortBy,
+
+            @RequestParam(defaultValue = "DESC")
+            String direction
+    ) {
 
         return ResponseEntity.ok(
-                paymentService.getAllPayments()
+                paymentService.getAllPayments(
+                        page,
+                        size,
+                        sortBy,
+                        direction
+                )
         );
 
     }
 
+    @GetMapping("/my-payments")
+    @Operation(
+            summary = "Get current user's payments"
+    )
+    public ResponseEntity<PageResponse<PaymentResponse>> getMyPayments(
 
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "createdAt")
+            String sortBy,
+
+            @RequestParam(defaultValue = "DESC")
+            String direction
+    ) {
+
+        return ResponseEntity.ok(
+                paymentService.getMyPayments(
+                        page,
+                        size,
+                        sortBy,
+                        direction
+                )
+        );
+
+    }
 
     @PostMapping("/{paymentId}/refund")
     @Operation(
@@ -109,12 +138,20 @@ public class PaymentController {
             @Valid @RequestBody RefundRequest request
     ) {
 
-
         return ResponseEntity.ok(
                 paymentService.refundPayment(
                         paymentId,
                         request
                 )
+        );
+
+    }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<PaymentStatisticsResponse> getPaymentStatistics() {
+
+        return ResponseEntity.ok(
+                paymentService.getPaymentStatistics()
         );
 
     }

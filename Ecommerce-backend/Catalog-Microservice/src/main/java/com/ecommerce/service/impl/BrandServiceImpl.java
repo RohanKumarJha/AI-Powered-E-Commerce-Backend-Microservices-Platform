@@ -3,7 +3,7 @@ package com.ecommerce.service.impl;
 import com.ecommerce.dto.request.BrandRequest;
 import com.ecommerce.dto.response.BrandResponse;
 import com.ecommerce.exception.BadRequestException;
-import com.ecommerce.factory.BrandFactory;
+import com.ecommerce.service.factory.BrandFactory;
 import com.ecommerce.mapper.BrandMapper;
 import com.ecommerce.model.Brand;
 import com.ecommerce.repository.BrandRepository;
