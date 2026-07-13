@@ -35,8 +35,6 @@ public class NotificationPreferenceFactory {
 
         NotificationPreference preference =
                 preferenceMapper.toEntity(request);
-
-
         preference.setActive(true);
 
         preference.setCreatedBy(UserContext.getCurrentUserId());

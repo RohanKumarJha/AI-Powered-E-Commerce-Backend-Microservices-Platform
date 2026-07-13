@@ -11,12 +11,8 @@ public class MockPaymentGatewayAdapter implements PaymentGatewayAdapter {
 
 
     @Override
-    public String processPayment(
-            BigDecimal amount
-    ) {
-
+    public String processPayment(BigDecimal amount) {
         return "TXN-" + UUID.randomUUID();
-
     }
 
 

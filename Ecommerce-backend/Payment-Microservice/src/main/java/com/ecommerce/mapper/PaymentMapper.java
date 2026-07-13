@@ -17,7 +17,6 @@ public class PaymentMapper {
 
 
     public Payment toEntity(PaymentRequest request) {
-
         return modelMapper.map(
                 request,
                 Payment.class

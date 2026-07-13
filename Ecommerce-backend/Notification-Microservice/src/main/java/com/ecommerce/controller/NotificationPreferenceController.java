@@ -14,51 +14,32 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class NotificationPreferenceController {
 
-
     private final NotificationPreferenceService preferenceService;
-
-
-
 
     @PostMapping
     public ResponseEntity<NotificationPreferenceResponse> createPreference(
             @Valid @RequestBody NotificationPreferenceRequest request
     ) {
-
-
-        return new ResponseEntity<>(
+     return new ResponseEntity<>(
                 preferenceService.createPreference(request),
                 HttpStatus.CREATED
         );
 
     }
-
-
-
-
-
     @GetMapping("/{userId}")
     public ResponseEntity<NotificationPreferenceResponse> getPreferenceByUserId(
             @PathVariable Long userId
     ) {
-
-
         return ResponseEntity.ok(
                 preferenceService.getPreferenceByUserId(userId)
         );
 
     }
-
-
-
-
-
     @PutMapping("/{userId}")
     public ResponseEntity<NotificationPreferenceResponse> updatePreference(
             @PathVariable Long userId,
             @Valid @RequestBody NotificationPreferenceRequest request
     ) {
-
 
         return ResponseEntity.ok(
                 preferenceService.updatePreference(
@@ -68,10 +49,6 @@ public class NotificationPreferenceController {
         );
 
     }
-
-
-
-
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deletePreference(

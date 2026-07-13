@@ -27,17 +27,11 @@ import java.util.Map;
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-
     private final NotificationRepository notificationRepository;
-
     private final NotificationFactory notificationFactory;
-
     private final NotificationMapper notificationMapper;
 
-
     private final Map<NotificationType, NotificationStrategy> strategyMap;
-
-
 
     public NotificationServiceImpl(
             NotificationRepository notificationRepository,
@@ -47,81 +41,51 @@ public class NotificationServiceImpl implements NotificationService {
             SmsNotificationStrategy smsNotificationStrategy,
             PushNotificationStrategy pushNotificationStrategy
     ) {
-
         this.notificationRepository = notificationRepository;
         this.notificationFactory = notificationFactory;
         this.notificationMapper = notificationMapper;
-
-
         this.strategyMap = Map.of(
                 NotificationType.EMAIL,
                 emailNotificationStrategy,
-
                 NotificationType.SMS,
                 smsNotificationStrategy,
-
                 NotificationType.PUSH,
                 pushNotificationStrategy
         );
     }
 
-
-
     @Override
     public NotificationResponse createNotification(
             NotificationRequest request
     ) {
-
-
         Notification notification =
                 notificationFactory.createNotification(request);
-
-
         NotificationStrategy strategy =
                 strategyMap.get(
                         notification.getNotificationType()
                 );
-
-
         if (strategy == null) {
-
             throw new BadRequestException(
                     "Unsupported notification type: "
                             + notification.getNotificationType()
             );
         }
-
-
-
         boolean sent = strategy.send(notification);
-
-
-
         notification.setStatus(
                 sent
                         ? NotificationStatus.SENT
                         : NotificationStatus.FAILED
         );
-
-
-
         Notification saved =
                 notificationRepository.save(notification);
-
-
-
         return notificationMapper.toResponse(saved);
 
     }
-
-
 
     @Override
     public NotificationResponse getNotificationById(
             Long notificationId
     ) {
-
-
         Notification notification =
                 notificationRepository.findById(notificationId)
                         .orElseThrow(
@@ -130,38 +94,25 @@ public class NotificationServiceImpl implements NotificationService {
                                                 + notificationId
                                 )
                         );
-
-
         return notificationMapper.toResponse(notification);
 
     }
-
-
-
 
     @Override
     public PageResponse<NotificationResponse> getAllNotifications(
             int page,
             int size
     ) {
-
-
         Page<Notification> notifications =
                 notificationRepository.findAll(
                         PageRequestUtil.create(page, size)
                 );
-
-
         return PageResponseUtil.convert(
                 notifications,
                 notificationMapper::toResponse
         );
 
     }
-
-
-
-
 
     @Override
     public PageResponse<NotificationResponse> getNotificationsByUserId(
@@ -169,15 +120,11 @@ public class NotificationServiceImpl implements NotificationService {
             int page,
             int size
     ) {
-
-
         Page<Notification> notifications =
                 notificationRepository.findByUserId(
                         userId,
                         PageRequestUtil.create(page, size)
                 );
-
-
         return PageResponseUtil.convert(
                 notifications,
                 notificationMapper::toResponse
@@ -185,17 +132,11 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
-
-
-
-
     @Override
     public NotificationResponse updateNotificationStatus(
             Long notificationId,
             UpdateNotificationStatusRequest request
     ) {
-
-
         Notification notification =
                 notificationRepository.findById(notificationId)
                         .orElseThrow(
@@ -204,55 +145,30 @@ public class NotificationServiceImpl implements NotificationService {
                                                 + notificationId
                                 )
                         );
-
-
         notification.setStatus(
                 request.getStatus()
         );
-
-
         notificationFactory.updateNotification(notification);
-
-
-
         Notification updated =
                 notificationRepository.save(notification);
-
-
-
         return notificationMapper.toResponse(updated);
 
     }
 
-
-
-
-
     @Override
-    public void deleteNotification(
-            Long notificationId
-    ) {
-
-
-        Notification notification =
-                notificationRepository.findById(notificationId)
-                        .orElseThrow(
-                                () -> new ResourceNotFoundException(
-                                        "Notification not found with id: "
-                                                + notificationId
-                                )
-                        );
-
-
+    public void deleteNotification(Long notificationId) {
+        Notification notification = notificationRepository
+                .findById(notificationId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Notification not found with id: " + notificationId
+                ));
+        if (!notification.getActive()) {
+            throw new ResourceNotFoundException(
+                    "Notification not found with id: " + notificationId
+            );
+        }
         notification.setActive(false);
-
-
         notificationFactory.updateNotification(notification);
-
-
-
         notificationRepository.save(notification);
-
     }
-
 }

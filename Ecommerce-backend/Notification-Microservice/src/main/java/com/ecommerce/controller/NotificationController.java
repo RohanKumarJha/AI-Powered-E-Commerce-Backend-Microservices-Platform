@@ -25,16 +25,11 @@ public class NotificationController {
     public ResponseEntity<NotificationResponse> createNotification(
             @Valid @RequestBody NotificationRequest request
     ) {
-
-
         return new ResponseEntity<>(
                 notificationService.createNotification(request),
                 HttpStatus.CREATED
         );
-
     }
-
-
 
     @GetMapping("/{notificationId}")
     public ResponseEntity<NotificationResponse> getNotificationById(
@@ -47,39 +42,24 @@ public class NotificationController {
         );
 
     }
-
-
-
-
-
     @GetMapping
     public ResponseEntity<PageResponse<NotificationResponse>> getAllNotifications(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-
-
         return ResponseEntity.ok(
                 notificationService.getAllNotifications(
                         page,
                         size
                 )
         );
-
     }
-
-
-
-
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<PageResponse<NotificationResponse>> getNotificationsByUserId(
             @PathVariable Long userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-
-
         return ResponseEntity.ok(
                 notificationService.getNotificationsByUserId(
                         userId,
@@ -90,41 +70,24 @@ public class NotificationController {
 
     }
 
-
-
-
-
     @PatchMapping("/{notificationId}/status")
     public ResponseEntity<NotificationResponse> updateNotificationStatus(
             @PathVariable Long notificationId,
             @Valid @RequestBody UpdateNotificationStatusRequest request
     ) {
-
-
         return ResponseEntity.ok(
                 notificationService.updateNotificationStatus(
                         notificationId,
                         request
                 )
         );
-
     }
-
-
-
-
 
     @DeleteMapping("/{notificationId}")
     public ResponseEntity<Void> deleteNotification(
             @PathVariable Long notificationId
     ) {
-
-
         notificationService.deleteNotification(notificationId);
-
-
         return ResponseEntity.noContent().build();
-
     }
-
 }
