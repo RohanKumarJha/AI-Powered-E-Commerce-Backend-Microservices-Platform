@@ -2,6 +2,7 @@ package com.ecommerce.exception;
 
 import com.ecommerce.dto.response.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -17,16 +19,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException ex,
             HttpServletRequest request) {
-
         StringBuilder message = new StringBuilder();
-
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 message.append(error.getField())
                         .append(": ")
                         .append(error.getDefaultMessage())
                         .append("; ")
         );
-
+        log.warn("Validation failed for request [{}] : {}",
+                request.getRequestURI(),
+                ex.getMessage());
         ExceptionResponse response = ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -34,7 +36,6 @@ public class GlobalExceptionHandler {
                 .message(message.toString())
                 .path(request.getRequestURI())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -42,7 +43,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(
             ResourceNotFoundException ex,
             HttpServletRequest request) {
-
+        log.warn("Resource not found for request [{}] : {}",
+                request.getRequestURI(),
+                ex.getMessage());
         ExceptionResponse response = ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())
@@ -50,7 +53,6 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -58,7 +60,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleResourceAlreadyExistsException(
             ResourceAlreadyExistsException ex,
             HttpServletRequest request) {
-
+        log.warn("Resource already exist for request [{}] : {}",
+                request.getRequestURI(),
+                ex.getMessage());
         ExceptionResponse response = ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.CONFLICT.value())
@@ -66,7 +70,6 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
@@ -74,7 +77,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleBadRequestException(
             BadRequestException ex,
             HttpServletRequest request) {
-
+        log.warn("Bad request [{}] : {}",
+                request.getRequestURI(),
+                ex.getMessage());
         ExceptionResponse response = ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -82,7 +87,6 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -90,7 +94,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleGlobalException(
             Exception ex,
             HttpServletRequest request) {
-
+        log.warn("Global Exception [{}] : {}",
+                request.getRequestURI(),
+                ex.getMessage());
         ExceptionResponse response = ExceptionResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -98,7 +104,6 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

@@ -1,6 +1,6 @@
 package com.ecommerce.dto.response;
 
-import com.ecommerce.model.ENUM.CartStatus;
+import com.ecommerce.model.enums.CartStatus;
 import lombok.*;
 
 import java.math.BigDecimal;

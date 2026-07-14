@@ -13,9 +13,7 @@ public class RecommendationFactory {
     public Recommendation createRecommendation(
             Long userId,
             Set<Long> recommendedProductIds,
-            Long createdBy
-    ) {
-
+            Long createdBy) {
         return Recommendation.builder()
                 .userId(userId)
                 .recommendedProductIds(new HashSet<>(recommendedProductIds))
@@ -30,15 +28,12 @@ public class RecommendationFactory {
     public Recommendation updateRecommendation(
             Recommendation recommendation,
             Set<Long> recommendedProductIds,
-            Long updatedBy
-    ) {
-
+            Long updatedBy) {
         recommendation.setRecommendedProductIds(
                 new HashSet<>(recommendedProductIds)
         );
         recommendation.setUpdatedAt(LocalDateTime.now());
         recommendation.setUpdatedBy(updatedBy);
-
         return recommendation;
     }
 

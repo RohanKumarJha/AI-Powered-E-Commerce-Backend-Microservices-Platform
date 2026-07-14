@@ -1,7 +1,7 @@
 package com.ecommerce.dto.response;
 
-import com.ecommerce.model.ENUM.OrderStatus;
-import com.ecommerce.model.ENUM.PaymentMethod;
+import com.ecommerce.model.enums.OrderStatus;
+import com.ecommerce.model.enums.PaymentMethod;
 import lombok.*;
 
 import java.math.BigDecimal;

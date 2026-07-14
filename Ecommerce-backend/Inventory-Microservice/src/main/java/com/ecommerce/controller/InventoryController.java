@@ -8,10 +8,12 @@ import com.ecommerce.dto.response.PageResponse;
 import com.ecommerce.service.InventoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/inventories")
 @RequiredArgsConstructor
@@ -22,7 +24,8 @@ public class InventoryController {
     @PostMapping
     public ResponseEntity<InventoryResponse> createInventory(
             @Valid @RequestBody InventoryRequest request) {
-
+        log.info("Receive request for creating inventory for product with productId : {}",
+                request.getProductId());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(inventoryService.createInventory(request));
     }
@@ -33,7 +36,7 @@ public class InventoryController {
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortDir) {
-
+        log.info("Receive request for get all inventories");
         return ResponseEntity.ok(
                 inventoryService.getAllInventories(
                         page,
@@ -47,7 +50,8 @@ public class InventoryController {
     @GetMapping("/{inventoryId}")
     public ResponseEntity<InventoryResponse> getInventoryById(
             @PathVariable Long inventoryId) {
-
+        log.info("Receive request for getting inventory with inventoryId : {}",
+                inventoryId);
         return ResponseEntity.ok(
                 inventoryService.getInventoryById(inventoryId)
         );
@@ -56,7 +60,8 @@ public class InventoryController {
     @GetMapping("/product/{productId}")
     public ResponseEntity<InventoryResponse> getInventoryByProductId(
             @PathVariable Long productId) {
-
+        log.info("Receive request for getting inventory with productId : {}",
+                productId);
         return ResponseEntity.ok(
                 inventoryService.getInventoryByProductId(productId)
         );
@@ -66,7 +71,8 @@ public class InventoryController {
     public ResponseEntity<InventoryResponse> updateInventory(
             @PathVariable Long inventoryId,
             @Valid @RequestBody UpdateInventoryRequest request) {
-
+        log.info("Receive request for update inventory with inventoryId : {}",
+                inventoryId);
         return ResponseEntity.ok(
                 inventoryService.updateInventory(
                         inventoryId,
@@ -79,7 +85,8 @@ public class InventoryController {
     public ResponseEntity<InventoryResponse> updateStock(
             @PathVariable Long inventoryId,
             @Valid @RequestBody UpdateStockRequest request) {
-
+        log.info("Receive request for updating stock on inventory with inventoryId : {}",
+                inventoryId);
         return ResponseEntity.ok(
                 inventoryService.updateStock(
                         inventoryId,
@@ -91,9 +98,9 @@ public class InventoryController {
     @DeleteMapping("/{inventoryId}")
     public ResponseEntity<Void> deleteInventory(
             @PathVariable Long inventoryId) {
-
+        log.info("Receive request for delete stock on inventory with inventoryId : {}",
+                inventoryId);
         inventoryService.deleteInventory(inventoryId);
-
         return ResponseEntity.noContent().build();
     }
 }

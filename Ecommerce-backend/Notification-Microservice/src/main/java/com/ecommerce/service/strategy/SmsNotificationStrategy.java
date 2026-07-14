@@ -7,22 +7,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SmsNotificationStrategy
-        implements NotificationStrategy {
-
+public class SmsNotificationStrategy implements NotificationStrategy {
 
     private final NotificationProviderAdapter notificationProviderAdapter;
 
-
-
     @Override
     public boolean send(Notification notification) {
-
         return notificationProviderAdapter.sendSms(
                 notification.getRecipient(),
                 notification.getMessage()
         );
-
     }
 
 }

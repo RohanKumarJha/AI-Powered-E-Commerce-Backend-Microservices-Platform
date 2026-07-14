@@ -1,6 +1,6 @@
 package com.ecommerce.dto.request;
 
-import com.ecommerce.model.ENUM.PaymentMethod;
+import com.ecommerce.model.enums.PaymentMethod;
 import jakarta.validation.constraints.*;
 import lombok.*;
 

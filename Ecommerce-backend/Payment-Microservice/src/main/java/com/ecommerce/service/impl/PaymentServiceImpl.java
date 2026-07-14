@@ -10,8 +10,8 @@ import com.ecommerce.exception.BadRequestException;
 import com.ecommerce.exception.ResourceNotFoundException;
 import com.ecommerce.service.factory.PaymentFactory;
 import com.ecommerce.mapper.PaymentMapper;
-import com.ecommerce.model.ENUM.PaymentMethod;
-import com.ecommerce.model.ENUM.PaymentStatus;
+import com.ecommerce.model.enums.PaymentMethod;
+import com.ecommerce.model.enums.PaymentStatus;
 import com.ecommerce.model.Payment;
 import com.ecommerce.repository.PaymentRepository;
 import com.ecommerce.security.UserContext;
@@ -202,7 +202,7 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setRefundAmount(request.getRefundAmount());
         payment.setRefundDate(java.time.LocalDateTime.now());
         payment.setPaymentStatus(
-                com.ecommerce.model.ENUM.PaymentStatus.REFUNDED
+                com.ecommerce.model.enums.PaymentStatus.REFUNDED
         );
         payment.setUpdatedAt(java.time.LocalDateTime.now());
 

@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import com.ecommerce.model.ENUM.RoleType;
+import com.ecommerce.model.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package com.ecommerce.repository;
 
-import com.ecommerce.model.ENUM.PaymentStatus;
+import com.ecommerce.model.enums.PaymentStatus;
 import com.ecommerce.model.Payment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

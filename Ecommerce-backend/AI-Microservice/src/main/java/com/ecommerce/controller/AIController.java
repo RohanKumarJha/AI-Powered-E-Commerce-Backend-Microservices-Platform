@@ -9,6 +9,8 @@ import com.ecommerce.service.AIService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,24 +20,25 @@ import org.springframework.web.bind.annotation.*;
         name = "AI Controller",
         description = "APIs for product recommendations, AI chat and review summarization."
 )
+@RequiredArgsConstructor
+@Slf4j
 public class AIController {
 
     private final AIService aiService;
-
-    public AIController(AIService aiService) {
-        this.aiService = aiService;
-    }
 
     @GetMapping("/recommendations/{userId}")
     @Operation(summary = "Get product recommendations")
     public ResponseEntity<RecommendationResponse> getRecommendations(
             @PathVariable Long userId,
-            @RequestParam(defaultValue = "RULE_BASED") String strategy
-    ) {
-
-        return ResponseEntity.ok(
-                aiService.getRecommendations(userId, strategy)
+            @RequestParam(defaultValue = "RULE_BASED") String strategy) {
+        log.info(
+                "Received request to get recommendations for userId: {} using strategy: {}",
+                userId,
+                strategy
         );
+        RecommendationResponse response =
+                aiService.getRecommendations(userId, strategy);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/chat")
@@ -43,12 +46,14 @@ public class AIController {
     public ResponseEntity<ChatResponse> chat(
             @Valid
             @RequestBody
-            ChatRequest request
-    ) {
-
-        return ResponseEntity.ok(
-                aiService.chat(request)
+            ChatRequest request) {
+        log.info(
+                "Received AI chat request for userId: {}",
+                request.getUserId()
         );
+        ChatResponse response =
+                aiService.chat(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/reviews/summarize")
@@ -56,12 +61,14 @@ public class AIController {
     public ResponseEntity<ReviewSummaryResponse> summarizeReviews(
             @Valid
             @RequestBody
-            ReviewSummaryRequest request
-    ) {
-
-        return ResponseEntity.ok(
-                aiService.summarizeReviews(request)
+            ReviewSummaryRequest request) {
+        log.info(
+                "Received review summarization request with {} reviews.",
+                request.getReviews().size()
         );
+        ReviewSummaryResponse response =
+                aiService.summarizeReviews(request);
+        return ResponseEntity.ok(response);
     }
 
 }

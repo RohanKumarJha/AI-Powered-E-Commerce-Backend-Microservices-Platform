@@ -13,11 +13,15 @@ import com.ecommerce.service.adapter.AIProviderAdapter;
 import com.ecommerce.service.factory.RecommendationFactory;
 import com.ecommerce.service.factory.RecommendationStrategyFactory;
 import com.ecommerce.service.strategy.RecommendationStrategy;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class AIServiceImpl implements AIService {
 
     private final RecommendationRepository recommendationRepository;
@@ -26,37 +30,24 @@ public class AIServiceImpl implements AIService {
     private final RecommendationStrategyFactory strategyFactory;
     private final AIProviderAdapter aiProviderAdapter;
 
-    public AIServiceImpl(
-            RecommendationRepository recommendationRepository,
-            RecommendationMapper recommendationMapper,
-            RecommendationFactory recommendationFactory,
-            RecommendationStrategyFactory strategyFactory,
-            AIProviderAdapter aiProviderAdapter
-    ) {
-        this.recommendationRepository = recommendationRepository;
-        this.recommendationMapper = recommendationMapper;
-        this.recommendationFactory = recommendationFactory;
-        this.strategyFactory = strategyFactory;
-        this.aiProviderAdapter = aiProviderAdapter;
-    }
-
     @Override
     public RecommendationResponse getRecommendations(
             Long userId,
-            String strategy
-    ) {
-
+            String strategy) {
+        log.info(
+                "Generating recommendations for userId: {} using strategy: {}",
+                userId,
+                strategy
+        );
         RecommendationStrategy recommendationStrategy =
                 strategyFactory.getStrategy(strategy);
-
         Set<Long> productIds =
                 recommendationStrategy.recommendProducts(userId);
-
         Recommendation recommendation =
                 recommendationRepository
                         .findByUserIdAndActiveTrue(userId)
-                        .map(existing -> recommendationFactory
-                                .updateRecommendation(
+                        .map(existing ->
+                                recommendationFactory.updateRecommendation(
                                         existing,
                                         productIds,
                                         userId
@@ -67,21 +58,31 @@ public class AIServiceImpl implements AIService {
                                         productIds,
                                         userId
                                 ));
-
         recommendation =
                 recommendationRepository.save(recommendation);
-
+        log.info(
+                "Recommendations generated successfully for userId: {}. Total recommended products: {}",
+                userId,
+                productIds.size()
+        );
         return recommendationMapper.toResponse(recommendation);
     }
 
     @Override
-    public ChatResponse chat(ChatRequest request) {
-
+    public ChatResponse chat(
+            ChatRequest request) {
+        log.info(
+                "Processing AI chat request for userId: {}",
+                request.getUserId()
+        );
         String answer = aiProviderAdapter.chat(
                 request.getUserId(),
                 request.getMessage()
         );
-
+        log.info(
+                "AI chat response generated successfully for userId: {}",
+                request.getUserId()
+        );
         return ChatResponse.builder()
                 .userId(request.getUserId())
                 .question(request.getMessage())
@@ -91,12 +92,16 @@ public class AIServiceImpl implements AIService {
 
     @Override
     public ReviewSummaryResponse summarizeReviews(
-            ReviewSummaryRequest request
-    ) {
-
-        String summary = aiProviderAdapter
-                .summarizeReviews(request.getReviews());
-
+            ReviewSummaryRequest request) {
+        log.info(
+                "Generating summary for {} review(s).",
+                request.getReviews().size()
+        );
+        String summary =
+                aiProviderAdapter.summarizeReviews(
+                        request.getReviews()
+                );
+        log.info("Review summary generated successfully.");
         return ReviewSummaryResponse.builder()
                 .summary(summary)
                 .build();

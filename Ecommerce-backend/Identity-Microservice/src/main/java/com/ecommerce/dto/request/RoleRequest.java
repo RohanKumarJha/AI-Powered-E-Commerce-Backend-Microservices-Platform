@@ -1,6 +1,6 @@
 package com.ecommerce.dto.request;
 
-import com.ecommerce.model.ENUM.RoleType;
+import com.ecommerce.model.enums.RoleType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

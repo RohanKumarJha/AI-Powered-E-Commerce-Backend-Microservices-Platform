@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import com.ecommerce.model.ENUM.PaymentMethod;
-import com.ecommerce.model.ENUM.PaymentStatus;
+import com.ecommerce.model.enums.PaymentMethod;
+import com.ecommerce.model.enums.PaymentStatus;
 
 @Entity
 @Table(name = "payments")

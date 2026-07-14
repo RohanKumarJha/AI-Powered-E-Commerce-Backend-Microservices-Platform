@@ -1,6 +1,6 @@
 package com.ecommerce.dto.request;
 
-import com.ecommerce.model.ENUM.CartStatus;
+import com.ecommerce.model.enums.CartStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 

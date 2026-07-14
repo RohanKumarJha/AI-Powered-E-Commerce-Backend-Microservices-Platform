@@ -10,10 +10,12 @@ import com.ecommerce.repository.RoleRepository;
 import com.ecommerce.repository.UserRepository;
 import com.ecommerce.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
@@ -30,7 +32,9 @@ public class RoleServiceImpl implements RoleService {
             throw new ResourceAlreadyExistsException("Role", "roleType", request.getRoleType());
         }
         Role role = roleFactory.createRole(request);
-        return roleMapper.toResponse(roleRepository.save(role));
+        Role savedRole = roleRepository.save(role);
+        log.info("Create role successfully with roleId : {}",savedRole.getRoleId());
+        return roleMapper.toResponse(savedRole);
     }
 
     @Override
@@ -45,26 +49,33 @@ public class RoleServiceImpl implements RoleService {
         }
         role.setRoleType(request.getRoleType());
         role.setDescription(request.getDescription());
-        return roleMapper.toResponse(roleRepository.save(role));
+        Role savedRole = roleRepository.save(role);
+        log.info("Update role successfully with roleId : {}",roleId);
+        return roleMapper.toResponse(savedRole);
     }
 
     @Override
     public void deleteRole(Long roleId) {
         Role role = roleFactory.getRoleById(roleId);
         roleRepository.delete(role);
+        log.info("Deleted role successfully with roleId : {}",roleId);
     }
 
     @Override
     public List<RoleResponse> getAllRoles() {
-        return roleRepository.findAll()
+        List<RoleResponse> roleResponses = roleRepository.findAll()
                 .stream()
                 .map(roleMapper::toResponse)
                 .toList();
+        log.info("Get all roles successfully");
+        return roleResponses;
     }
 
     @Override
     public RoleResponse getRoleById(Long roleId) {
-        return roleMapper.toResponse(roleFactory.getRoleById(roleId));
+        Role getRoleById = roleFactory.getRoleById(roleId);
+        log.info("Get role successfully with roleId : {}",roleId);
+        return roleMapper.toResponse(getRoleById);
     }
 
 }

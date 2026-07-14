@@ -13,10 +13,12 @@ import com.ecommerce.repository.RoleRepository;
 import com.ecommerce.repository.UserRepository;
 import com.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -42,38 +44,50 @@ public class UserServiceImpl implements UserService {
                         new ResourceNotFoundException("Role", "roleId", request.getRoleId()));
         User user = userFactory.createUser(request);
         user.setRole(role);
-        return userMapper.toResponse(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+        log.info("Register user successfully with userId : {}",
+                savedUser);
+        return userMapper.toResponse(savedUser);
     }
 
     @Override
     public UserResponse getUserById(Long userId) {
-        return userMapper.toResponse(userFactory.getUserById(userId));
+        User getUserById = userFactory.getUserById(userId);
+        log.info("Get User successfully with userId : {}",userId);
+        return userMapper.toResponse(getUserById);
     }
 
     @Override
     public UserResponse getUserByEmail(String email) {
-        return userMapper.toResponse(userFactory.getUserByEmail(email));
+        User getUserByEmail = userFactory.getUserByEmail(email);
+        log.info("Get user successfully with email : {}",email);
+        return userMapper.toResponse(getUserByEmail);
     }
 
     @Override
     public UserResponse updateUser(Long userId, UpdateUserRequest request) {
         User user = userFactory.getUserById(userId);
         userMapper.updateEntity(request, user);
-        return userMapper.toResponse(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+        log.info("Updated user successfully with userId : {}",userId);
+        return userMapper.toResponse(savedUser);
     }
 
     @Override
     public void deleteUser(Long userId) {
         User user = userFactory.getUserById(userId);
         userRepository.delete(user);
+        log.info("Delete user successfully wit userId : {}",userId);
     }
 
     @Override
     public List<UserResponse> getAllUsers() {
-        return userRepository.findAll()
+        List<UserResponse> responses = userRepository.findAll()
                 .stream()
                 .map(userMapper::toResponse)
                 .toList();
+        log.info("Get all users successfully");
+        return responses;
     }
 
     /*

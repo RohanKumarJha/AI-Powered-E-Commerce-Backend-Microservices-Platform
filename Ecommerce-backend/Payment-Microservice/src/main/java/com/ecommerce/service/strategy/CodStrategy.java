@@ -1,7 +1,7 @@
 package com.ecommerce.service.strategy;
 
 import com.ecommerce.model.Payment;
-import com.ecommerce.model.ENUM.PaymentStatus;
+import com.ecommerce.model.enums.PaymentStatus;
 import org.springframework.stereotype.Component;
 
 

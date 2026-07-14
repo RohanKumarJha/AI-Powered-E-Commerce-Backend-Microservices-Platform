@@ -1,6 +1,6 @@
 package com.ecommerce.dto.response;
 
-import com.ecommerce.model.ENUM.RoleType;
+import com.ecommerce.model.enums.RoleType;
 import lombok.*;
 
 import java.time.LocalDateTime;

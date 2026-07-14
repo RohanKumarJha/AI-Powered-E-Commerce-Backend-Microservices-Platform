@@ -5,7 +5,7 @@ import com.ecommerce.client.order.response.OrderResponse;
 import com.ecommerce.dto.request.PaymentRequest;
 import com.ecommerce.exception.BadRequestException;
 import com.ecommerce.mapper.PaymentMapper;
-import com.ecommerce.model.ENUM.PaymentStatus;
+import com.ecommerce.model.enums.PaymentStatus;
 import com.ecommerce.model.Payment;
 import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;

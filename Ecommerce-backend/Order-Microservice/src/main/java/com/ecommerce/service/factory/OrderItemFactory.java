@@ -6,6 +6,7 @@ import com.ecommerce.client.catalog.response.ProductResponse;
 import com.ecommerce.exception.BadRequestException;
 import com.ecommerce.model.Order;
 import com.ecommerce.model.OrderItem;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -13,24 +14,24 @@ import java.math.RoundingMode;
 import java.util.Comparator;
 import java.util.Objects;
 
+@Slf4j
 @Component
 public class OrderItemFactory {
 
     private static final BigDecimal DEFAULT_DISCOUNT = BigDecimal.ZERO;
 
-    /**
-     * Creates OrderItem entity.
-     */
     public OrderItem createOrderItem(
             Order order,
             CartItemResponse cartItem,
             ProductResponse product) {
-
+        log.debug(
+                "Creating order item for productId: {}",
+                product != null ? product.getProductId() : null
+        );
         validateOrder(order);
         validateCartItem(cartItem);
         validateProduct(product);
-
-        return OrderItem.builder()
+        OrderItem orderItem = OrderItem.builder()
                 .order(order)
                 .productId(product.getProductId())
                 .sellerId(product.getSellerId())
@@ -52,73 +53,73 @@ public class OrderItemFactory {
                         )
                 )
                 .build();
+        log.debug(
+                "Order item created successfully for productId: {}",
+                product.getProductId()
+        );
+        return orderItem;
     }
 
-    /**
-     * Calculates line total.
-     */
     public BigDecimal calculateLineTotal(
             BigDecimal specialPrice,
             Integer quantity) {
-
+        log.debug(
+                "Calculating line total. SpecialPrice: {}, Quantity: {}",
+                specialPrice,
+                quantity
+        );
         Objects.requireNonNull(
                 specialPrice,
                 "Special price cannot be null."
         );
-
         Objects.requireNonNull(
                 quantity,
                 "Quantity cannot be null."
         );
-
-        return specialPrice
+        BigDecimal lineTotal = specialPrice
                 .multiply(BigDecimal.valueOf(quantity))
                 .setScale(2, RoundingMode.HALF_UP);
+        log.debug("Calculated line total: {}", lineTotal);
+        return lineTotal;
     }
 
-    /**
-     * Validates OrderItem request.
-     */
     private void validateCartItem(CartItemResponse cartItem) {
-
+        log.debug("Validating cart item.");
         if (cartItem == null) {
+            log.warn("Cart item cannot be null.");
             throw new BadRequestException(
                     "Cart item cannot be null."
             );
         }
-
         if (cartItem.getProductId() == null) {
+            log.warn("Product id is required.");
             throw new BadRequestException(
                     "Product id is required."
             );
         }
-
         validateQuantity(cartItem.getQuantity());
     }
 
-    /**
-     * Validates product.
-     */
     private void validateProduct(ProductResponse product) {
-
+        log.debug(
+                "Validating product: {}",
+                product != null ? product.getProductId() : null
+        );
         if (product == null) {
             throw new BadRequestException(
                     "Product not found."
             );
         }
-
         if (Boolean.FALSE.equals(product.getActive())) {
             throw new BadRequestException(
                     "Product is inactive."
             );
         }
-
         if (product.getPrice() == null) {
             throw new BadRequestException(
                     "Product price is missing."
             );
         }
-
         if (product.getSpecialPrice() == null) {
             throw new BadRequestException(
                     "Product special price is missing."
@@ -126,11 +127,8 @@ public class OrderItemFactory {
         }
     }
 
-    /**
-     * Validates order.
-     */
     private void validateOrder(Order order) {
-
+        log.debug("Validating order.");
         if (order == null) {
             throw new BadRequestException(
                     "Order cannot be null."
@@ -138,17 +136,13 @@ public class OrderItemFactory {
         }
     }
 
-    /**
-     * Validates quantity.
-     */
     public void validateQuantity(Integer quantity) {
-
+        log.debug("Validating quantity: {}", quantity);
         if (quantity == null) {
             throw new BadRequestException(
                     "Quantity is required."
             );
         }
-
         if (quantity <= 0) {
             throw new BadRequestException(
                     "Quantity must be greater than zero."
@@ -156,17 +150,20 @@ public class OrderItemFactory {
         }
     }
 
-    /**
-     * Returns primary image URL.
-     */
     private String getPrimaryImage(ProductResponse product) {
-
+        log.debug(
+                "Resolving primary image for productId: {}",
+                product.getProductId()
+        );
         if (product.getImages() == null
                 || product.getImages().isEmpty()) {
+            log.debug(
+                    "No images found for productId: {}",
+                    product.getProductId()
+            );
             return null;
         }
-
-        return product.getImages()
+        String imageUrl = product.getImages()
                 .stream()
                 .filter(ProductImageResponse::getPrimaryImage)
                 .findFirst()
@@ -181,5 +178,10 @@ public class OrderItemFactory {
                                 .orElse(null)
                 )
                 .getImageUrl();
+        log.debug(
+                "Primary image resolved successfully for productId: {}",
+                product.getProductId()
+        );
+        return imageUrl;
     }
 }

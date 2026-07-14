@@ -6,8 +6,10 @@ import com.ecommerce.mapper.UserMapper;
 import com.ecommerce.model.User;
 import com.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserFactory {
@@ -16,19 +18,26 @@ public class UserFactory {
     private final UserMapper userMapper;
 
     public User createUser(RegisterRequest request) {
+        log.debug("Creating user entity for request");
         return userMapper.toEntity(request);
     }
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User", "userId", userId));
+                .orElseThrow(() -> {
+                    log.warn("User not found with userId : {}",
+                            userId);
+                    return new ResourceNotFoundException("User", "userId", userId);
+                });
     }
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User", "email", email));
+                .orElseThrow(() -> {
+                    log.warn("User not found with email : {}",
+                            email);
+                    return new ResourceNotFoundException("User", "email", email);
+                });
     }
 
     /*

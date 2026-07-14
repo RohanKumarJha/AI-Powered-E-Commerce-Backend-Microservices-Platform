@@ -4,26 +4,27 @@ import com.ecommerce.client.catalog.response.BrandResponse;
 import com.ecommerce.client.catalog.response.CategoryResponse;
 import com.ecommerce.client.catalog.response.ProductImageResponse;
 import com.ecommerce.client.catalog.response.ProductResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class MockCatalogClient implements CatalogClient {
 
     @Override
     public ProductResponse getProductById(Long productId) {
-
+        log.info("Fetching mock product with productId: {}", productId);
         ProductImageResponse image = ProductImageResponse.builder()
                 .productImageId(1L)
                 .imageUrl("https://dummyimage.com/product.jpg")
                 .displayOrder(1)
                 .primaryImage(true)
                 .build();
-
-        return ProductResponse.builder()
+        ProductResponse response = ProductResponse.builder()
                 .productId(productId)
                 .name("Mock Product")
                 .description("Mock Product Description")
@@ -41,5 +42,9 @@ public class MockCatalogClient implements CatalogClient {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
+        log.debug("Returning mock product: id={}, sku={}",
+                response.getProductId(),
+                response.getSku());
+        return response;
     }
 }

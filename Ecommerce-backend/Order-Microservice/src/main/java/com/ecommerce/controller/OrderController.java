@@ -7,10 +7,12 @@ import com.ecommerce.dto.response.PageResponse;
 import com.ecommerce.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
@@ -21,9 +23,11 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(
             @Valid @RequestBody OrderRequest request) {
+        log.info("Received request to create order");
         return new ResponseEntity<>(
                 orderService.createOrder(request),
-                HttpStatus.CREATED);
+                HttpStatus.CREATED
+        );
     }
 
     @GetMapping
@@ -32,7 +36,13 @@ public class OrderController {
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortDir) {
-
+        log.info(
+                "Received request to fetch all orders. page={}, size={}, sortBy={}, sortDir={}",
+                page,
+                size,
+                sortBy,
+                sortDir
+        );
         return ResponseEntity.ok(
                 orderService.getAllOrders(
                         page,
@@ -46,10 +56,11 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrderById(
             @PathVariable Long orderId) {
+        log.info("Received request to fetch order with id: {}", orderId);
         return ResponseEntity.ok(
-                orderService.getOrderById(orderId));
+                orderService.getOrderById(orderId)
+        );
     }
-
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<PageResponse<OrderResponse>> getOrdersByUserId(
@@ -58,7 +69,14 @@ public class OrderController {
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortDir) {
-
+        log.info(
+                "Received request to fetch orders for userId: {}. page={}, size={}, sortBy={}, sortDir={}",
+                userId,
+                page,
+                size,
+                sortBy,
+                sortDir
+        );
         return ResponseEntity.ok(
                 orderService.getOrdersByUserId(
                         userId,
@@ -70,20 +88,20 @@ public class OrderController {
         );
     }
 
-
     @PutMapping("/{orderId}/status")
     public ResponseEntity<OrderResponse> updateOrderStatus(
             @PathVariable Long orderId,
             @Valid @RequestBody UpdateOrderStatusRequest request) {
+        log.info("Received request to update status of order: {}", orderId);
         return ResponseEntity.ok(
                 orderService.updateOrderStatus(orderId, request)
         );
     }
 
-
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrder(
             @PathVariable Long orderId) {
+        log.info("Received request to delete order with id: {}", orderId);
         orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
     }

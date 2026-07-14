@@ -1,6 +1,6 @@
 package com.ecommerce.dto.request;
 
-import com.ecommerce.model.ENUM.AddressType;
+import com.ecommerce.model.enums.AddressType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

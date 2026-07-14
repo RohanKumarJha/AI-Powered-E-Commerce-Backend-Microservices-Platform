@@ -1,7 +1,7 @@
 package com.ecommerce.model;
 
-import com.ecommerce.model.ENUM.OrderStatus;
-import com.ecommerce.model.ENUM.PaymentMethod;
+import com.ecommerce.model.enums.OrderStatus;
+import com.ecommerce.model.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
 
