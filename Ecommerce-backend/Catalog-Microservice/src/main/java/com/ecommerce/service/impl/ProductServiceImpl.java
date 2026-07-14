@@ -18,6 +18,7 @@ import com.ecommerce.dto.response.PageResponse;
 import com.ecommerce.specification.ProductSpecification;
 import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import com.ecommerce.util.PageRequestUtil;
 import com.ecommerce.util.PageResponseUtil;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -46,7 +48,9 @@ public class ProductServiceImpl implements ProductService {
         product.setCreatedBy(userId);
         product.setUpdatedBy(userId);
         product.setSpecialPrice(request.getPrice().subtract(request.getDiscount()));
-        return productMapper.toResponse(productRepository.save(product));
+        Product saveproduct = productRepository.save(product);
+        log.info("Product saved in repository for product id : {}",saveproduct.getProductId());
+        return productMapper.toResponse(saveproduct);
     }
 
     @Override
@@ -58,18 +62,22 @@ public class ProductServiceImpl implements ProductService {
         product.setBrand(productFactory.getBrandById(request.getBrandId()));
         product.setSpecialPrice(request.getPrice().subtract(request.getDiscount()));
         product.setUpdatedBy(UserContext.getCurrentUserId());
-        return productMapper.toResponse(productRepository.save(product));
+        Product saveproduct = productRepository.save(product);
+        log.info("Product saved in repository for product id : {}",saveproduct.getProductId());
+        return productMapper.toResponse(saveproduct);
     }
 
     @Override
     public void deleteProduct(Long productId) {
         Product product = productFactory.getProductById(productId);
         productRepository.delete(product);
+        log.info("Product deleted successfully");
     }
 
     @Override
     public ProductResponse getProductById(Long productId) {
         Product product = productFactory.getProductById(productId);
+        log.info("Successfully fetched product for product id :{}", productId);
         return productMapper.toResponse(product);
     }
 
@@ -87,6 +95,7 @@ public class ProductServiceImpl implements ProductService {
                                 sortBy,
                                 sortDir))
                         .map(productMapper::toResponse);
+        log.info("Successfully Fetched All Products");
         return PageResponseUtil.from(result);
     }
 
@@ -106,6 +115,8 @@ public class ProductServiceImpl implements ProductService {
                                         sortBy,
                                         sortDir))
                         .map(productMapper::toResponse);
+        log.info("Product search completed. Total products found: {}",
+                result.getTotalElements());
         return PageResponseUtil.from(result);
     }
 
@@ -126,23 +137,29 @@ public class ProductServiceImpl implements ProductService {
                                         sortBy,
                                         sortDir))
                         .map(productMapper::toResponse);
+        log.info("Product filtering completed. Total matching products: {}",
+                result.getTotalElements());
         return PageResponseUtil.from(result);
     }
 
     @Override
     public List<ProductResponse> sortProducts(String sortBy) {
         Sort sort = Sort.by(sortBy).ascending();
-        return productRepository.findAll(sort)
+        List<ProductResponse> responses = productRepository.findAll(sort)
                 .stream()
                 .map(productMapper::toResponse)
                 .toList();
+        log.info("Successfully fetched {} sorted products.", responses.size());
+        return responses;
     }
 
     @Override
     public Page<ProductResponse> getProducts(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        return productRepository.findAll(pageRequest)
+        Page<ProductResponse> pageRequest = productRepository.findAll(PageRequest.of(page, size))
                 .map(productMapper::toResponse);
+        log.info("Fetched {} products from page {}.",
+                pageRequest.getNumberOfElements(), page);
+        return pageRequest;
     }
 
     @Override
@@ -153,6 +170,10 @@ public class ProductServiceImpl implements ProductService {
         Long userId = UserContext.getCurrentUserId();
         productImage.setCreatedBy(userId);
         productImage.setUpdatedBy(userId);
+        ProductImage savedImage = productImageRepository.save(productImage);
+
+        log.info("Product image uploaded successfully with ID: {} for product ID: {}",
+                savedImage.getProductImageId(), productId);
         return productImageMapper.toResponse(
                 productImageRepository.save(productImage));
     }
@@ -162,5 +183,6 @@ public class ProductServiceImpl implements ProductService {
         ProductImage productImage =
                 productImageFactory.getProductImageById(imageId);
         productImageRepository.delete(productImage);
+        log.info("Product image deleted successfully with ID: {}", imageId);
     }
 }

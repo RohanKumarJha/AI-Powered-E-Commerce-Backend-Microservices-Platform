@@ -10,12 +10,14 @@ import com.ecommerce.repository.CategoryRepository;
 import com.ecommerce.service.CategoryService;
 import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -28,16 +30,15 @@ public class CategoryServiceImpl implements CategoryService {
         Long userId = UserContext.getCurrentUserId();
         category.setCreatedBy(userId);
         category.setUpdatedBy(userId);
-        return categoryMapper.toResponse(categoryRepository.save(category));
+        Category saveCategory = categoryRepository.save(category);
+        log.info("Category created Successfully with category id : {}",saveCategory.getCategoryId());
+        return categoryMapper.toResponse(saveCategory);
     }
 
     @Override
     public CategoryResponse updateCategory(Long categoryId, CategoryRequest request) {
         Category category = categoryFactory.getCategoryById(categoryId);
-        categoryFactory.validateCategoryNameForUpdate(
-                categoryId,
-                request.getName()
-        );
+        categoryFactory.validateCategoryNameForUpdate(categoryId, request.getName());
         categoryMapper.updateFromRequest(request, category);
         if (request.getParentCategoryId() != null) {
             Category parentCategory =
@@ -52,7 +53,9 @@ public class CategoryServiceImpl implements CategoryService {
             category.setParentCategory(null);
         }
         category.setUpdatedBy(UserContext.getCurrentUserId());
-        return categoryMapper.toResponse(categoryRepository.save(category));
+        Category saveCategory = categoryRepository.save(category);
+        log.info("Category {} Updated Successfully",categoryId);
+        return categoryMapper.toResponse(saveCategory);
     }
 
     @Override
@@ -66,19 +69,25 @@ public class CategoryServiceImpl implements CategoryService {
             );
         }
         categoryRepository.delete(category);
+        log.info("Category deleted Successfully with id : {}",categoryId);
     }
 
     @Override
     public CategoryResponse getCategoryById(Long categoryId) {
         Category category = categoryFactory.getCategoryById(categoryId);
-        return categoryMapper.toResponse(category);
+        CategoryResponse response = categoryMapper.toResponse(category);
+        log.info("Successfully fetched category id : {}", categoryId);
+        return response;
     }
 
     @Override
     public List<CategoryResponse> getAllCategories() {
-        return categoryRepository.findAll()
-                .stream()
+
+        List<Category> categories = categoryRepository.findAll();
+        List<CategoryResponse>  responses = categories.stream()
                 .map(categoryMapper::toResponse)
                 .toList();
+        log.info("Successfully fetched {} categories", responses.size());
+        return responses;
     }
 }

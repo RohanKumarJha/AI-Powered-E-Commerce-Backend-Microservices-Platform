@@ -11,12 +11,14 @@ import com.ecommerce.service.CartService;
 import com.ecommerce.util.PageRequestUtil;
 import com.ecommerce.util.PageResponseUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
@@ -27,6 +29,7 @@ public class CartServiceImpl implements CartService {
     public CartResponse createCart() {
         Cart cart = cartFactory.createCart();
         cart = cartRepository.save(cart);
+        log.info("Cart created successfully with ID: {}", cart.getCartId());
         return cartMapper.toResponse(cart);
     }
 
@@ -45,21 +48,22 @@ public class CartServiceImpl implements CartService {
         Page<CartResponse> cartPage = cartRepository
                 .findAll(pageable)
                 .map(cartMapper::toResponse);
+        log.info("Successfully fetched {} carts.", cartPage.getNumberOfElements());
         return PageResponseUtil.from(cartPage);
     }
 
     @Override
     public CartResponse getCartById(Long cartId) {
-        return cartMapper.toResponse(
-                cartFactory.getCartById(cartId)
-        );
+        CartResponse response = cartMapper.toResponse(cartFactory.getCartById(cartId));
+        log.info("Cart fetched successfully with ID: {}", cartId);
+        return response;
     }
 
     @Override
     public CartResponse getCartByUserId(Long userId) {
-        return cartMapper.toResponse(
-                cartFactory.getCartByUserId(userId)
-        );
+        CartResponse response = cartMapper.toResponse(cartFactory.getCartByUserId(userId));
+        log.info("Cart fetched successfully for user ID: {}", userId);
+        return response;
     }
 
     @Override
@@ -69,6 +73,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartFactory.getCartById(cartId);
         cart.setCartStatus(request.getStatus());
         cart = cartRepository.save(cart);
+        log.info("Cart status updated successfully for cart ID: {}", cartId);
         return cartMapper.toResponse(cart);
     }
 
@@ -76,5 +81,6 @@ public class CartServiceImpl implements CartService {
     public void deleteCart(Long cartId) {
         Cart cart = cartFactory.getCartById(cartId);
         cartRepository.delete(cart);
+        log.info("Cart deleted successfully with ID: {}", cartId);
     }
 }

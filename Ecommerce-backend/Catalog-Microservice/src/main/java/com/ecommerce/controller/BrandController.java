@@ -5,6 +5,7 @@ import com.ecommerce.dto.response.BrandResponse;
 import com.ecommerce.service.BrandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,12 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/brands")
 @RequiredArgsConstructor
+@Slf4j
 public class BrandController {
 
     private final BrandService brandService;
 
     @PostMapping
     public BrandResponse createBrand(@Valid @RequestBody BrandRequest request) {
+        log.info("Create Brand API called.");
         return brandService.createBrand(request);
     }
 

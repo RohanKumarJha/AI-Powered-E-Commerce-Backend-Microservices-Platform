@@ -23,12 +23,14 @@ import com.ecommerce.service.strategy.UpiStrategy;
 import com.ecommerce.util.PageRequestUtil;
 import com.ecommerce.util.PageResponseUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
@@ -42,76 +44,68 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponse createPayment(PaymentRequest request) {
-
         if (paymentRepository.existsByOrderId(request.getOrderId())) {
             throw new BadRequestException(
                     "Payment already exists for order id: " + request.getOrderId()
             );
         }
-
         Payment payment = paymentFactory.createPayment(request);
-
+        log.info("Payment entity created successfully for order ID: {}",
+                payment.getOrderId());
         PaymentStrategy strategy = getPaymentStrategy(
                 payment.getPaymentMethod()
         );
-
         payment = strategy.processPayment(payment);
-
+        log.info("Payment processed with status: {}",
+                payment.getPaymentStatus());
         if (payment.getTransactionId() != null) {
-
             payment.setGatewayReferenceId(
                     paymentGatewayAdapter.processPayment(
                             payment.getAmount()
                     )
             );
+            log.info("Gateway reference generated successfully: {}",
+                    payment.getGatewayReferenceId());
         }
-
         payment = paymentRepository.save(payment);
-
+        log.info("Payment created successfully with ID: {}",
+                payment.getPaymentId());
         return paymentMapper.toResponse(payment);
     }
 
     @Override
     public PaymentResponse getPaymentById(Long paymentId) {
-
         Payment payment = paymentRepository
                 .findById(paymentId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Payment not found with id: " + paymentId
                 ));
-
+        log.info("Payment fetched successfully with ID: {}", paymentId);
         return paymentMapper.toResponse(payment);
     }
 
     @Override
     public PaymentResponse getPaymentByOrderId(Long orderId) {
-
         Payment payment = paymentRepository
                 .findByOrderId(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Payment not found for order id: " + orderId
                 ));
-
+        log.info("Payment fetched successfully for order ID: {}", orderId);
         return paymentMapper.toResponse(payment);
     }
 
     private PaymentStrategy getPaymentStrategy(
             PaymentMethod paymentMethod
     ) {
-
         return switch (paymentMethod) {
-
             case CREDIT_CARD -> creditCardStrategy;
-
             case UPI -> upiStrategy;
-
             case COD -> codStrategy;
-
             default -> throw new BadRequestException(
                     "Unsupported payment method: " + paymentMethod
             );
         };
-
     }
 
     @Override
@@ -121,18 +115,17 @@ public class PaymentServiceImpl implements PaymentService {
             String sortBy,
             String direction
     ) {
-
         Pageable pageable = PageRequestUtil.create(
                 page,
                 size,
                 sortBy,
                 direction
         );
-
         Page<PaymentResponse> paymentPage = paymentRepository
                 .findAll(pageable)
                 .map(paymentMapper::toResponse);
-
+        log.info("Successfully fetched {} payments.",
+                paymentPage.getNumberOfElements());
         return PageResponseUtil.create(paymentPage);
 
     }
@@ -158,9 +151,10 @@ public class PaymentServiceImpl implements PaymentService {
                         pageable
                 )
                 .map(paymentMapper::toResponse);
-
+        log.info("Successfully fetched {} payments for user ID: {}",
+                paymentPage.getNumberOfElements(),
+                UserContext.getCurrentUserId());
         return PageResponseUtil.create(paymentPage);
-
     }
 
     @Override
@@ -168,7 +162,6 @@ public class PaymentServiceImpl implements PaymentService {
             Long paymentId,
             RefundRequest request
     ) {
-
         Payment payment = paymentRepository
                 .findById(paymentId)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -192,22 +185,24 @@ public class PaymentServiceImpl implements PaymentService {
                     "Refund amount cannot exceed the payment amount."
             );
         }
-
+        log.info("Calling payment gateway for refund. Payment ID: {}, Refund Amount: {}",
+                paymentId,
+                request.getRefundAmount());
         String refundReference = paymentGatewayAdapter.refundPayment(
                 payment.getTransactionId(),
                 request.getRefundAmount()
         );
-
         payment.setRefundId(refundReference);
         payment.setRefundAmount(request.getRefundAmount());
         payment.setRefundDate(java.time.LocalDateTime.now());
         payment.setPaymentStatus(
-                com.ecommerce.model.enums.PaymentStatus.REFUNDED
+                PaymentStatus.REFUNDED
         );
         payment.setUpdatedAt(java.time.LocalDateTime.now());
-
         payment = paymentRepository.save(payment);
-
+        log.info("Refund processed successfully. Payment ID: {}, Refund Reference: {}",
+                payment.getPaymentId(),
+                refundReference);
         return paymentMapper.toResponse(payment);
 
     }
@@ -215,7 +210,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentStatisticsResponse getPaymentStatistics() {
 
-        return PaymentStatisticsResponse.builder()
+        PaymentStatisticsResponse response = PaymentStatisticsResponse.builder()
                 .totalPayments(paymentRepository.count())
                 .successfulPayments(
                         paymentRepository.countByPaymentStatus(
@@ -244,7 +239,15 @@ public class PaymentServiceImpl implements PaymentService {
                         paymentRepository.getTotalRefundAmount()
                 )
                 .build();
-
+        log.info(
+                "Payment statistics generated successfully. Total Payments: {}, Successful: {}, Pending: {}, Failed: {}, Refunded: {}",
+                response.getTotalPayments(),
+                response.getSuccessfulPayments(),
+                response.getPendingPayments(),
+                response.getFailedPayments(),
+                response.getRefundedPayments()
+        );
+        return response;
     }
 
 }

@@ -11,12 +11,14 @@ import com.ecommerce.service.BrandReferenceService;
 import com.ecommerce.service.BrandService;
 import com.ecommerce.security.UserContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
@@ -32,8 +34,9 @@ public class BrandServiceImpl implements BrandService {
         Long userId = UserContext.getCurrentUserId();
         brand.setCreatedBy(userId);
         brand.setUpdatedBy(userId);
-
-        return brandMapper.toResponse(brandRepository.save(brand));
+        Brand savebrand = brandRepository.save(brand);
+        log.info("Brand Created Successfully with brand id : {}", savebrand.getBrandId());
+        return brandMapper.toResponse(savebrand);
     }
 
     @Override
@@ -49,8 +52,9 @@ public class BrandServiceImpl implements BrandService {
         brandMapper.updateFromRequest(request, brand);
 
         brand.setUpdatedBy(UserContext.getCurrentUserId());
-
-        return brandMapper.toResponse(brandRepository.save(brand));
+        Brand savebrand = brandRepository.save(brand);
+        log.info("Brand Updated Successfully for brand id : {}",brandId);
+        return brandMapper.toResponse(savebrand);
     }
 
     @Override
@@ -65,22 +69,25 @@ public class BrandServiceImpl implements BrandService {
         }
 
         brandRepository.delete(brand);
+        log.info("Brand Deleted Successfully for brand id : {}",brandId);
     }
 
     @Override
     public BrandResponse getBrandById(Long brandId) {
 
         Brand brand = brandFactory.getById(brandId);
-
+        log.info("Brand fetched successfully with id: {}", brandId);
         return brandMapper.toResponse(brand);
     }
 
     @Override
     public List<BrandResponse> getAllBrands() {
 
-        return brandRepository.findAll()
+        List<BrandResponse> responses = brandRepository.findAll()
                 .stream()
                 .map(brandMapper::toResponse)
                 .toList();
+        log.info("Fetched {} brands successfully.",responses.size());
+        return responses;
     }
 }
