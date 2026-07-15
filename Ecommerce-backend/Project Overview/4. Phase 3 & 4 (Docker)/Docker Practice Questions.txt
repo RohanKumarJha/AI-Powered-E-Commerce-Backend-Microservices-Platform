@@ -1,0 +1,280 @@
+Level 1: Docker Basics (1-10)
+
+1.
+Install Docker and verify the installation.
+Goal:
+Install Docker Desktop/Engine
+Check Docker version
+Run hello-world
+
+2.
+Run an Ubuntu container and explore it.
+Tasks:
+Start Ubuntu
+Enter bash
+Create files
+Exit
+Restart container
+
+3.
+Learn important Docker commands.
+Practice:
+docker ps
+docker ps -a
+docker images
+docker rm
+docker rmi
+docker start
+docker stop
+docker restart
+docker logs
+
+4.
+Create your first Dockerfile
+Containerize a simple Java application.
+
+5.
+Understand Docker layers
+Modify Dockerfile multiple times and observe build caching.
+
+6.
+Use docker exec
+Enter an already running container.
+
+7.
+Understand image vs container
+Explain:
+Image
+Container
+Volume
+Network
+using actual commands.
+
+8.
+Remove unused resources
+Practice
+docker system prune
+docker image prune
+docker volume prune
+
+9.
+Tag Docker images
+Create multiple versions.
+v1
+v2
+latest
+
+10.
+Push an image to Docker Hub.
+
+
+Level 2: Dockerfiles (11-20)
+11.
+Write a Dockerfile for
+Spring Boot Jar
+
+12.
+Reduce image size using
+Multi-stage Build.
+
+13.
+Compare
+openjdk
+vs
+eclipse-temurin
+
+14.
+Pass environment variables into Spring Boot.
+SPRING_PROFILES_ACTIVE
+
+15.
+Use ENTRYPOINT
+Understand ENTRYPOINT vs CMD.
+
+16.
+Expose application port.
+
+17.
+Pass JVM arguments inside Docker.
+-Xmx
+-Xms
+
+18.
+Copy external configuration into the container.
+
+19.
+Use .dockerignore properly.
+
+20.
+Optimize Docker build time.
+
+
+Level 3: Volumes (21-25)
+21.
+Persist PostgreSQL data using Docker Volume.
+
+22.
+Understand Bind Mount vs Volume.
+
+23.
+Store uploaded images in Docker volume.
+
+24.
+Backup Docker volumes.
+
+25.
+Restore Docker volumes.
+
+
+Level 4: Networking (26-30)
+26.
+Create a custom Docker network.
+
+27.
+
+Run
+Spring Boot
++
+Postgres
+inside one network.
+
+28.
+Connect two Spring Boot containers.
+Example
+Order
+↓
+Inventory
+
+29.
+Inspect Docker network.
+
+30.
+Understand bridge
+vs
+host
+vs
+none network.
+
+
+Level 5: Docker Compose (31-40)
+31.
+Install Docker Compose.
+
+32.
+Run
+Spring Boot
+Postgres
+using Compose.
+
+33.
+Run
+Identity
+Catalog
+Inventory
+together.
+
+34.
+Add
+Redis
+into Docker Compose.
+
+35.
+Add
+RabbitMQ
+into Docker Compose.
+
+36.
+Run your entire e-commerce backend using Compose.
+
+37.
+Use depends_on.
+
+38.
+Pass environment variables using
+.env
+
+39.
+Scale Catalog Service
+docker compose up --scale
+
+40.
+Restart failed containers automatically.
+
+
+Level 6: Production Concepts (41-45)
+41.
+Health Check
+Implement health checks.
+
+42.
+Container logs
+View logs
+Tail logs
+Export logs
+
+43.
+Limit container resources.
+CPU
+Memory
+
+44.
+Secrets
+Pass database password securely.
+
+45.
+Build production-ready Docker images.
+
+
+Level 7: Real Project Challenges (46-50)
+46.
+Containerize your Identity Microservice.
+
+47.
+Containerize all microservices.
+Identity
+Catalog
+Inventory
+Cart
+Order
+Payment
+Notification
+AI
+
+48.
+Run the complete project.
+Gateway
+↓
+Eureka
+↓
+Config Server
+↓
+8 Microservices
+↓
+Redis
+↓
+RabbitMQ
+↓
+Postgres
+↓
+Zipkin
+↓
+Prometheus
+↓
+Grafana
+using Docker Compose.
+
+49.
+Create different Docker Compose files.
+compose-dev.yml
+compose-test.yml
+compose-prod.yml
+
+50.
+Deploy the entire project on an AWS EC2 instance using Docker Compose.
+Tasks:
+Install Docker on EC2
+Copy project
+Build images
+Start services
+Configure reverse proxy (e.g., Nginx)
+Verify health endpoints and logs
