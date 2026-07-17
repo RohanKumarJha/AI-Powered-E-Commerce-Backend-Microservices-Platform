@@ -7,6 +7,7 @@ Install Docker Desktop/Engine
 Check Docker version
 Run hello-world
 
+
 2.
 Run an Ubuntu container and explore it.
 Tasks:
@@ -15,6 +16,26 @@ Enter bash
 Create files
 Exit
 Restart container
+
+	Solution
+docker pull ubuntu
+docker images
+docker run -it --name ubuntu-demo ubuntu:latest bash
+pwd
+ls
+cd etc/os-release
+mkdir docker-practice
+cd docker-practice
+touch file1.txt
+echo "Hello docker" > file1.txt
+ls -l
+cat file1.txt
+exit
+docker ps -a
+docker start container_id
+docker exec -it ubuntu-demo bash
+docker stop container_id
+
 
 3.
 Learn important Docker commands.
@@ -29,17 +50,67 @@ docker stop
 docker restart
 docker logs
 
+
 4.
 Create your first Dockerfile
 Containerize a simple Java application.
+
+	Solution
+Step 1: Create a Simple Java Application : HelloWorld.java
+Step 2: Compile the Java Program : HelloWorld.class
+Step 3: Create the Dockerfile
+	FROM eclipse-temurin:21-jdk  (Linux + Java 21 + JDK;  Give me a Linux machine with Java 21 already installed)
+	WORKDIR /app                 (mkdir -p /app;  cd /app)
+	COPY HelloWorld.class .      (COPY <source> <destination>;  Copy HelloWorld.class to /app;  COPY . .)
+	CMD ["java", "HelloWorld"]  
+	"FROM a base image, WORKDIR into a folder, COPY my code, RUN setup commands, set ENV variables, EXPOSE the port, choose a USER, define the ENTRYPOINT, and finish with CMD."
+Step 4: Build the Docker Image       (docker build -t hello-java .)
+Step 5: Check Images                 (docker images)
+Step 6: Run the Container            (docker run hello-java)
+Step 7: Check Running Containers     (docker ps)
+Step 8: Remove Container             (docker rm <container-id>)
+Step 9: Remove Image                 (docker rmi hello-java)
+
 
 5.
 Understand Docker layers
 Modify Dockerfile multiple times and observe build caching.
 
+	Solution
+Step 1: Build the image             (docker build -t helloworld:v1 .;  FROM → WORKDIR → COPY → CMD → Image Created)
+Step 2: Build Again(Without Changes)(docker build -t helloworld:v2 .;  CACHED [1/3] FROM → CACHED [2/3] WORKDIR → CACHED [3/3] COPY) Nothing changed. Docker reused every cached layer.
+Step 3: Change Only CMD             (CMD ["java", "-jar", "./app.jar"]; docker build -t helloworld:v3 .)
+	FROM Cached
+	WORKDIR     Cached
+	COPY        Cached
+	CMD         Image configuration updated
+CMD does not create a filesystem layer. It only changes the image configuration (metadata).
+Step 4: Modify the Java Code        (System.out.println("Docker Layer Caching");  mvn clean package;  docker build -t helloworld:v4 .)
+	FROM        Cached
+	WORKDIR     Cached
+	COPY        Rebuilt
+The JAR file changed. Therefore Docker executes the COPY instruction again.
+Step 5: Change WORKDIR              (WORKDIR /application;  docker build -t helloworld:v5 .)
+	FROM        Cached
+	WORKDIR     Rebuilt
+	COPY        Rebuilt
+Every layer after the modified layer must also be rebuilt.
+Step 6: Change Base Image           (FROM eclipse-temurin:17-jdk;  docker build -t helloworld:v6 .)
+	FROM        Rebuilt
+	WORKDIR     Rebuilt
+	COPY        Rebuilt
+Step 7: Build Without Cache         (docker build --no-cache -t helloworld:fresh .)
+Docker ignores every cached layer. Everything is rebuilt.
+Step 8: View Image Layers           (docker history helloworld:v6)
+
+
 6.
 Use docker exec
 Enter an already running container.
+
+	Solution
+Same as 2nd
+
 
 7.
 Understand image vs container
@@ -50,12 +121,73 @@ Volume
 Network
 using actual commands.
 
+	Solution
+Image → Read-only template used to create containers. (📦 Image = Blueprint / Recipe)
+Step 1: Build an Image
+	docker build -t hello-java:v1 .
+	docker images
+	docker image inspect hello-java:v1
+	docker history hello-java:v1
+Container → Running instance of an image with its own writable layer. (🚀 Container = Running Application)
+Step 2: Create a Container
+	docker run --name my-app hello-java:v1
+	docker run -d --name my-app hello-java:v1
+	docker ps
+	docker ps -a
+	docker logs my-app
+	docker exec -it my-app bash
+	docker start my-app
+	docker stop my-app
+	docker restart my-app
+	docker rm my-app
+Volume → Persistent storage that survives container deletion. (💾 Volume = Hard Disk / Persistent Storage)
+Step 3: Understand Volume
+	docker volume create my-volume
+	docker volume ls
+	docker volume inspect my-volume
+	docker run -d \ --name mysql \ -v my-volume:/var/lib/mysql \ mysql
+	docker volume rm my-volume
+Network → Virtual network that enables communication between containers. (🌐 Network = Bridge that lets containers communicate)
+Step 4: Understand Network
+	docker network ls
+	docker network create ecommerce-network
+	docker network inspect ecommerce-network
+	docker run -d \ --network ecommerce-network \ --name service-a \ nginx
+	docker run -d \ --network ecommerce-network \ --name service-b \ nginx
+	docker exec -it service-a bash
+	ping service-b
+	docker network rm ecommerce-network
+
+
 8.
 Remove unused resources
 Practice
 docker system prune
 docker image prune
 docker volume prune
+
+	Solution
+Step 1: Check Current Resources
+	docker images
+	docker ps -a
+	docker volume ls
+	docker network ls
+	docker system df
+Step 2: Remove Stopped Containers
+	docker container prune
+Step 3: Remove Unused Images
+	docker image prune
+	docker image prune -a
+Step 4: Remove Unused Volumes
+	docker volume prune
+Step 5: Remove Unused Networks
+	docker network prune
+Step 6: Remove Build Cache
+	docker builder prune
+Step 7: Clean Everything
+	docker system prune
+prune means "remove unused resources." Use docker system prune for general cleanup, docker image prune for unused images, and docker volume prune for unused volumes.
+
 
 9.
 Tag Docker images
@@ -64,8 +196,45 @@ v1
 v2
 latest
 
+	Solution
+Step 1: Build Version 1
+	docker build -t hello-java:v1 .
+	docker images
+Step 2: Build Version 2
+	docker build -t hello-java:v2 .
+	docker images
+Step 3: Create the latest Tag
+	docker tag hello-java:v2 hello-java:latest
+	docker images
+Step 4: Create Another Tag
+	docker tag hello-java:v1 hello-java:production
+Step 5: Run a Specific Version
+	docker run hello-java:v1
+	docker run hello-java:v2
+	docker run hello-java:latest
+Step 6: Remove a Tag
+	docker rmi hello-java:v1
+Source Code → docker build → hello-java:v1 → Modify Code → docker build → hello-java:v2 → docker tag → hello-java:latest
+A Docker tag is a version label for an image. Multiple tags (such as v1, v2, and latest) can point to the same image, and latest is simply a conventional tag, not an automatically updated version.
+
+
 10.
 Push an image to Docker Hub.
+
+	Solution
+Step 1: Create a Docker Hub Account
+Step 2: Login to Docker Hub
+Step 3: Check Local Images
+Step 4: Tag the Image
+	docker tag <local-image>:<tag> <dockerhub-username>/<repository>:<tag>
+Step 5: Push the Image
+	docker push rohanjha/hello-java:latest
+Step 6: Verify on Docker Hub
+Step 7: Pull the Image
+	docker pull rohanjha/hello-java:v1
+	docker run rohanjha/hello-java:v1
+Step 8: Logout
+	docker logout
 
 
 Level 2: Dockerfiles (11-20)
