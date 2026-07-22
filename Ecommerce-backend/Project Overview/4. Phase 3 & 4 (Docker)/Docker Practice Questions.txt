@@ -1,405 +1,187 @@
-Level 1: Docker Basics (1-10)
+	Level 1 – Docker Fundamentals (1–5)
+1. Install Docker & Explore Containers
+Tasks : Install Docker Desktop/Engine, Verify installation, Run hello-world, Pull Ubuntu image, Create a container, Enter the container, Create files and directories, Exit and restart the container, Use docker exec
 
-1.
-Install Docker and verify the installation.
-Goal:
-Install Docker Desktop/Engine
-Check Docker version
-Run hello-world
+2. Create Your First Docker Image
+Tasks : Write a simple Java application, Create a Dockerfile, Build an image, Run a container, Remove image and container
+Concepts : Dockerfile, Image, Container
 
+3. Master Dockerfile Instructions
+Practice Every Important Instruction :
+FROM
+WORKDIR
+COPY
+ADD
+RUN
+CMD
+ENTRYPOINT
+EXPOSE
+ENV
+ARG
+LABEL
+USER
+VOLUME
+.dockerignore
 
-2.
-Run an Ubuntu container and explore it.
-Tasks:
-Start Ubuntu
-Enter bash
-Create files
-Exit
-Restart container
+Experiments : 
+Observe Docker layer caching
+Change only CMD
+Change ENTRYPOINT
+Modify application code
+Change WORKDIR
+Change base image
+Build with --no-cache
+View layers using docker history
+Compare COPY vs ADD
+Compare CMD vs ENTRYPOINT
+Pass build arguments using ARG
+Pass runtime variables using ENV
+Run as a non-root user
+Optimize build context with .dockerignore
 
-	Solution
-docker pull ubuntu
-docker images
-docker run -it --name ubuntu-demo ubuntu:latest bash
-pwd
-ls
-cd etc/os-release
-mkdir docker-practice
-cd docker-practice
-touch file1.txt
-echo "Hello docker" > file1.txt
-ls -l
-cat file1.txt
-exit
-docker ps -a
-docker start container_id
-docker exec -it ubuntu-demo bash
-docker stop container_id
+4. Understand Docker Resources
+Learn using actual commands :
+Images
+Containers
+Volumes
+Networks
 
+5. Image Management
+Practice : 
+Tagging
+Versioning
+Cleanup
 
-3.
-Learn important Docker commands.
-Practice:
-docker ps
-docker ps -a
-docker images
-docker rm
-docker rmi
-docker start
-docker stop
-docker restart
-docker logs
-
-
-4.
-Create your first Dockerfile
-Containerize a simple Java application.
-
-	Solution
-Step 1: Create a Simple Java Application : HelloWorld.java
-Step 2: Compile the Java Program : HelloWorld.class
-Step 3: Create the Dockerfile
-	FROM eclipse-temurin:21-jdk  (Linux + Java 21 + JDK;  Give me a Linux machine with Java 21 already installed)
-	WORKDIR /app                 (mkdir -p /app;  cd /app)
-	COPY HelloWorld.class .      (COPY <source> <destination>;  Copy HelloWorld.class to /app;  COPY . .)
-	CMD ["java", "HelloWorld"]  
-	"FROM a base image, WORKDIR into a folder, COPY my code, RUN setup commands, set ENV variables, EXPOSE the port, choose a USER, define the ENTRYPOINT, and finish with CMD."
-Step 4: Build the Docker Image       (docker build -t hello-java .)
-Step 5: Check Images                 (docker images)
-Step 6: Run the Container            (docker run hello-java)
-Step 7: Check Running Containers     (docker ps)
-Step 8: Remove Container             (docker rm <container-id>)
-Step 9: Remove Image                 (docker rmi hello-java)
-
-
-5.
-Understand Docker layers
-Modify Dockerfile multiple times and observe build caching.
-
-	Solution
-Step 1: Build the image             (docker build -t helloworld:v1 .;  FROM → WORKDIR → COPY → CMD → Image Created)
-Step 2: Build Again(Without Changes)(docker build -t helloworld:v2 .;  CACHED [1/3] FROM → CACHED [2/3] WORKDIR → CACHED [3/3] COPY) Nothing changed. Docker reused every cached layer.
-Step 3: Change Only CMD             (CMD ["java", "-jar", "./app.jar"]; docker build -t helloworld:v3 .)
-	FROM Cached
-	WORKDIR     Cached
-	COPY        Cached
-	CMD         Image configuration updated
-CMD does not create a filesystem layer. It only changes the image configuration (metadata).
-Step 4: Modify the Java Code        (System.out.println("Docker Layer Caching");  mvn clean package;  docker build -t helloworld:v4 .)
-	FROM        Cached
-	WORKDIR     Cached
-	COPY        Rebuilt
-The JAR file changed. Therefore Docker executes the COPY instruction again.
-Step 5: Change WORKDIR              (WORKDIR /application;  docker build -t helloworld:v5 .)
-	FROM        Cached
-	WORKDIR     Rebuilt
-	COPY        Rebuilt
-Every layer after the modified layer must also be rebuilt.
-Step 6: Change Base Image           (FROM eclipse-temurin:17-jdk;  docker build -t helloworld:v6 .)
-	FROM        Rebuilt
-	WORKDIR     Rebuilt
-	COPY        Rebuilt
-Step 7: Build Without Cache         (docker build --no-cache -t helloworld:fresh .)
-Docker ignores every cached layer. Everything is rebuilt.
-Step 8: View Image Layers           (docker history helloworld:v6)
-
-
-6.
-Use docker exec
-Enter an already running container.
-
-	Solution
-Same as 2nd
-
-
-7.
-Understand image vs container
-Explain:
-Image
-Container
-Volume
-Network
-using actual commands.
-
-	Solution
-Image → Read-only template used to create containers. (📦 Image = Blueprint / Recipe)
-Step 1: Build an Image
-	docker build -t hello-java:v1 .
-	docker images
-	docker image inspect hello-java:v1
-	docker history hello-java:v1
-Container → Running instance of an image with its own writable layer. (🚀 Container = Running Application)
-Step 2: Create a Container
-	docker run --name my-app hello-java:v1
-	docker run -d --name my-app hello-java:v1
-	docker ps
-	docker ps -a
-	docker logs my-app
-	docker exec -it my-app bash
-	docker start my-app
-	docker stop my-app
-	docker restart my-app
-	docker rm my-app
-Volume → Persistent storage that survives container deletion. (💾 Volume = Hard Disk / Persistent Storage)
-Step 3: Understand Volume
-	docker volume create my-volume
-	docker volume ls
-	docker volume inspect my-volume
-	docker run -d \ --name mysql \ -v my-volume:/var/lib/mysql \ mysql
-	docker volume rm my-volume
-Network → Virtual network that enables communication between containers. (🌐 Network = Bridge that lets containers communicate)
-Step 4: Understand Network
-	docker network ls
-	docker network create ecommerce-network
-	docker network inspect ecommerce-network
-	docker run -d \ --network ecommerce-network \ --name service-a \ nginx
-	docker run -d \ --network ecommerce-network \ --name service-b \ nginx
-	docker exec -it service-a bash
-	ping service-b
-	docker network rm ecommerce-network
-
-
-8.
-Remove unused resources
-Practice
-docker system prune
+Commands :
+docker tag
 docker image prune
-docker volume prune
+docker system prune
+docker builder prune
 
-	Solution
-Step 1: Check Current Resources
-	docker images
-	docker ps -a
-	docker volume ls
-	docker network ls
-	docker system df
-Step 2: Remove Stopped Containers
-	docker container prune
-Step 3: Remove Unused Images
-	docker image prune
-	docker image prune -a
-Step 4: Remove Unused Volumes
-	docker volume prune
-Step 5: Remove Unused Networks
-	docker network prune
-Step 6: Remove Build Cache
-	docker builder prune
-Step 7: Clean Everything
-	docker system prune
-prune means "remove unused resources." Use docker system prune for general cleanup, docker image prune for unused images, and docker volume prune for unused volumes.
-
-
-9.
-Tag Docker images
-Create multiple versions.
+Create : 
 v1
 v2
 latest
-
-	Solution
-Step 1: Build Version 1
-	docker build -t hello-java:v1 .
-	docker images
-Step 2: Build Version 2
-	docker build -t hello-java:v2 .
-	docker images
-Step 3: Create the latest Tag
-	docker tag hello-java:v2 hello-java:latest
-	docker images
-Step 4: Create Another Tag
-	docker tag hello-java:v1 hello-java:production
-Step 5: Run a Specific Version
-	docker run hello-java:v1
-	docker run hello-java:v2
-	docker run hello-java:latest
-Step 6: Remove a Tag
-	docker rmi hello-java:v1
-Source Code → docker build → hello-java:v1 → Modify Code → docker build → hello-java:v2 → docker tag → hello-java:latest
-A Docker tag is a version label for an image. Multiple tags (such as v1, v2, and latest) can point to the same image, and latest is simply a conventional tag, not an automatically updated version.
+production
 
 
-10.
-Push an image to Docker Hub.
+	Level 2 – Spring Boot Dockerization (6–10)
+6. Dockerize a Spring Boot Application
+Containerize one microservice (e.g., Notification Service).
+Practice :
+Build JAR
+Create Dockerfile
+Build image
+Run container
+Expose port
 
-	Solution
-Step 1: Create a Docker Hub Account
-Step 2: Login to Docker Hub
-Step 3: Check Local Images
-Step 4: Tag the Image
-	docker tag <local-image>:<tag> <dockerhub-username>/<repository>:<tag>
-Step 5: Push the Image
-	docker push rohanjha/hello-java:latest
-Step 6: Verify on Docker Hub
-Step 7: Pull the Image
-	docker pull rohanjha/hello-java:v1
-	docker run rohanjha/hello-java:v1
-Step 8: Logout
-	docker logout
+7. Multi-Stage Build
+Reduce image size.
+Practice : 
+Builder stage
+Runtime stage
+Copy only the JAR
+Compare image sizes
 
-
-Level 2: Dockerfiles (11-20)
-11.
-Write a Dockerfile for
-Spring Boot Jar
-
-12.
-Reduce image size using
-Multi-stage Build.
-
-13.
-Compare
-openjdk
-vs
-eclipse-temurin
-
-14.
-Pass environment variables into Spring Boot.
+8. Runtime Configuration
+Pass configuration without rebuilding.
+Practice :
 SPRING_PROFILES_ACTIVE
+Database URL
+Username
+Password
+JVM options (-Xms, -Xmx)
 
-15.
-Use ENTRYPOINT
-Understand ENTRYPOINT vs CMD.
+9. Optimize Docker Builds
+Practice :
+Layer ordering
+Dependency caching
+Faster rebuilds
+Small images
 
-16.
-Expose application port.
-
-17.
-Pass JVM arguments inside Docker.
--Xmx
--Xms
-
-18.
-Copy external configuration into the container.
-
-19.
-Use .dockerignore properly.
-
-20.
-Optimize Docker build time.
-
-
-Level 3: Volumes (21-25)
-21.
-Persist PostgreSQL data using Docker Volume.
-
-22.
-Understand Bind Mount vs Volume.
-
-23.
-Store uploaded images in Docker volume.
-
-24.
-Backup Docker volumes.
-
-25.
-Restore Docker volumes.
-
-
-Level 4: Networking (26-30)
-26.
-Create a custom Docker network.
-
-27.
-
+10. Push Images to Docker Hub
+Practice :
+Login
+Tag image
+Push
+Pull
 Run
-Spring Boot
-+
-Postgres
-inside one network.
+Logout
 
-28.
-Connect two Spring Boot containers.
-Example
-Order
-↓
-Inventory
 
-29.
-Inspect Docker network.
+	Level 3 – Storage & Networking (11–15)
+11. Docker Volumes
+Practice :
+Named volumes
+Bind mounts
+Persist PostgreSQL data
+Store uploaded files
 
-30.
-Understand bridge
-vs
+12. Backup & Restore Volumes
+Practice : 
+Backup volume
+Restore volume
+Verify restored data
+
+13. Docker Networks
+Practice : 
+Create custom bridge network
+Connect containers
+Inspect network
+Remove network
+
+14. Connect Spring Boot Microservices
+Run : 
+Order Service
+Inventory Service
+
+Communicate using Docker DNS instead of localhost.
+
+15. Network Modes
+Compare : 
+bridge
 host
-vs
-none network.
+none
+
+Understand when to use each.
 
 
-Level 5: Docker Compose (31-40)
-31.
-Install Docker Compose.
+	Level 4 – Docker Compose (16–20)
+16. Spring Boot + PostgreSQL
+Create a Compose file.
+Practice : 
+Services
+Networks
+Volumes
+Environment variables
 
-32.
-Run
-Spring Boot
-Postgres
-using Compose.
-
-33.
-Run
+17. Compose Multiple Services
+Run :
 Identity
 Catalog
 Inventory
-together.
+PostgreSQL
 
-34.
-Add
+Use :
+depends_on
+restart policy
+
+18. Add Supporting Services
+Extend Compose with : 
 Redis
-into Docker Compose.
-
-35.
-Add
 RabbitMQ
-into Docker Compose.
 
-36.
-Run your entire e-commerce backend using Compose.
-
-37.
-Use depends_on.
-
-38.
-Pass environment variables using
+19. Environment Files & Scaling
+Practice : 
 .env
-
-39.
-Scale Catalog Service
 docker compose up --scale
+Restart policies
 
-40.
-Restart failed containers automatically.
-
-
-Level 6: Production Concepts (41-45)
-41.
-Health Check
-Implement health checks.
-
-42.
-Container logs
-View logs
-Tail logs
-Export logs
-
-43.
-Limit container resources.
-CPU
-Memory
-
-44.
-Secrets
-Pass database password securely.
-
-45.
-Build production-ready Docker images.
-
-
-Level 7: Real Project Challenges (46-50)
-46.
-Containerize your Identity Microservice.
-
-47.
-Containerize all microservices.
+20. Run the Entire E-Commerce Backend
+Compose should start : 
+Gateway
+Eureka
+Config Server
 Identity
 Catalog
 Inventory
@@ -408,42 +190,48 @@ Order
 Payment
 Notification
 AI
-
-48.
-Run the complete project.
-Gateway
-↓
-Eureka
-↓
-Config Server
-↓
-8 Microservices
-↓
+PostgreSQL
 Redis
-↓
 RabbitMQ
-↓
-Postgres
-↓
-Zipkin
-↓
-Prometheus
-↓
-Grafana
-using Docker Compose.
 
-49.
-Create different Docker Compose files.
-compose-dev.yml
-compose-test.yml
-compose-prod.yml
 
-50.
-Deploy the entire project on an AWS EC2 instance using Docker Compose.
-Tasks:
-Install Docker on EC2
-Copy project
+	Level 5 – Production Docker (21–25)
+21. Health Checks
+Implement : 
+Docker health checks
+Verify container health
+
+22. Logging & Resource Limits
+Practice : 
+View logs
+Tail logs
+Export logs
+CPU limits
+Memory limits
+
+23. Docker Secrets
+Pass sensitive information securely.
+Practice : 
+Database password
+API keys
+
+24. Production-Ready Images
+Optimize : 
+Image size
+Security
+Non-root user
+Multi-stage build
+Minimal runtime image
+
+25. Deploy to AWS EC2
+Deploy the complete project.
+Tasks : 
+Install Docker
+Install Docker Compose
+Clone project
 Build images
-Start services
-Configure reverse proxy (e.g., Nginx)
-Verify health endpoints and logs
+Run Compose
+Configure Nginx reverse proxy
+Verify health endpoints
+Verify logs
+Pull images from Docker Hub
