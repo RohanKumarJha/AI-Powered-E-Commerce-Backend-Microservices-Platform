@@ -14,12 +14,13 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/api/v1/addresses")
 @RequiredArgsConstructor
 public class AddressController {
 
     private final AddressService addressService;
 
-    @PostMapping("/api/v1/users/{userId}/addresses")
+    @PostMapping("/users/{userId}")
     public ResponseEntity<AddressResponse> addAddress(
             @PathVariable Long userId,
             @Valid @RequestBody AddressRequest request) {
@@ -28,7 +29,7 @@ public class AddressController {
                 .body(addressService.addAddress(userId, request));
     }
 
-    @PutMapping("/api/v1/addresses/{addressId}")
+    @PutMapping("/{addressId}")
     public ResponseEntity<AddressResponse> updateAddress(
             @PathVariable Long addressId,
             @Valid @RequestBody AddressRequest request) {
@@ -36,7 +37,7 @@ public class AddressController {
         return ResponseEntity.ok(addressService.updateAddress(addressId, request));
     }
 
-    @DeleteMapping("/api/v1/addresses/{addressId}")
+    @DeleteMapping("/{addressId}")
     public ResponseEntity<Void> deleteAddress(
             @PathVariable Long addressId) {
         log.info("Receive request for delete address with addressId : {}",addressId);
@@ -44,14 +45,14 @@ public class AddressController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/api/v1/addresses/{addressId}")
+    @GetMapping("/{addressId}")
     public ResponseEntity<AddressResponse> getAddressById(
             @PathVariable Long addressId) {
         log.info("Receive request for get address by addressId : {}",addressId);
         return ResponseEntity.ok(addressService.getAddressById(addressId));
     }
 
-    @GetMapping("/api/v1/users/{userId}/addresses")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<List<AddressResponse>> getUserAddresses(
             @PathVariable Long userId) {
         log.info("Receive request for get user addresses by userId : {}",userId);
