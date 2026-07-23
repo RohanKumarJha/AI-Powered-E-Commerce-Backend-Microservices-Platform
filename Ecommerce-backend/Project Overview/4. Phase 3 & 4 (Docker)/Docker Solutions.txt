@@ -1,0 +1,134 @@
+		1st solution
+----------------------------------------------
+Step 1: Install Docker
+Step 2: Verify Installation
+Step 3: Run the Hello World Container
+Step 4: Check Downloaded Images
+Step 5: Pull Ubuntu Image
+Step 6: Create and Start an Ubuntu Container
+Step 7: Explore the Container
+Step 8: Create Files
+Step 9: Create Directories
+Step 10: Create Content
+Step 11: Navigate Directories
+Step 12: Exit the Container
+Step 13: View Containers
+Step 14: Restart the Container
+Step 15: Enter the Running Container Using docker exec
+Step 16: Verify the File Content
+Step 17: Stop the Container
+Step 18: Start Again
+Step 19: Remove the Container (Optional Cleanup)
+
+
+		2nd solution
+----------------------------------------------
+Step 1: Create a Simple Java Application
+Step 2: Compile the Java Program
+Step 3: Create a Runnable JAR
+Step 4: Test the JAR
+Step 5: Create a Dockerfile 
+	(FROM eclipse-temurin:21-jdk | WORKDIR /app | COPY HelloDocker.jar . | CMD ["java", "-jar", "HelloDocker.jar"])
+Step 6: Understand the Dockerfile
+Step 7: Build the Docker Image
+Step 8: Verify the Image
+Step 9: Run the Container
+Step 10: Run with a Container Name
+Step 11: View Running Containers
+Step 12: View All Containers
+Step 13: View Container Logs
+Step 14: Inspect the Image
+Step 15: Inspect the Container
+Step 16: Tag the Image
+Step 17: Run the Tagged Image
+Step 18: Remove the Container
+Step 19: Remove the Image
+Step 20: Verify Cleanup
+
+
+		3rd solution
+----------------------------------------------
+Step 1: Create Project Structure
+Step 2: Create Java Application
+Step 3: FROM
+Step 4: WORKDIR
+Step 5: COPY
+Step 6: ADD
+Step 7: RUN
+Step 8: CMD
+Step 9: ENTRYPOINT
+Step 10: EXPOSE
+Step 11: ENV
+Step 12: ARG
+Step 13: LABEL
+Step 14: USER
+Step 15: VOLUME
+Step 16: .dockerignore
+--------------------Experiments-------------------
+Step 17: Docker Layer Caching
+Step 18: Change Only CMD
+Step 19: Change ENTRYPOINT
+Step 20: Modify Application Code
+Step 21: Change WORKDIR
+Step 22: Change Base Image
+Step 23: Build Without Cache
+Step 24: View Docker Layers
+Step 25: Compare COPY vs ADD
+Step 26: Compare CMD vs ENTRYPOINT
+Step 27: Build Argument (ARG)
+Step 28: Runtime Variable (ENV)
+Step 29: Run as Non-Root User
+Step 30: Optimize Build Context
+
+
+		4th solution
+----------------------------------------------
+Step 1: View Docker Images
+Step 2: Pull a New Image
+Step 3: Remove an Image
+	Containers
+Step 4: Create a Container
+Step 5: View Running Containers
+Step 6: View All Containers
+Step 7: Start a Stopped Container
+Step 8: Stop a Running Container
+Step 9: Restart a Container
+Step 10: Enter a Running Container
+Step 11: Inspect a Container
+Step 12: View Container Logs
+Step 13: Remove a Container
+	Volumes
+Step 14: Create a Volume
+Step 15: Inspect a Volume
+Step 16: Use a Volume
+Step 17: Verify Persistence
+Step 18: Remove a Volume
+	Networks
+Step 19: View Networks
+Step 20: Create a Network
+Step 21: Inspect the Network
+Step 22: Run Containers on the Same Network
+Step 23: Verify Network
+Step 24: Connect a Running Container
+Step 25: Disconnect a Container
+Step 26: Remove a Network
+
+
+		5th solution
+----------------------------------------------
+Step 1: Verify Existing Images
+Step 2: Create Version 1
+Step 3: Create Version 2
+Step 4: Create Production Tag
+Step 5: Run Different Versions
+Step 6: Inspect an Image
+Step 7: View Image Layers
+Step 8: Remove Version 1
+Step 9: Remove Production Tag
+Step 10: Remove Dangling Images
+Step 11: Remove All Unused Images
+Step 12: View Build Cache
+Step 13: Remove All Builder Cache
+Step 14: Remove Unused Docker Resources
+Step 15: Complete Cleanup
+Step 16: Remove Everything Including Volumes

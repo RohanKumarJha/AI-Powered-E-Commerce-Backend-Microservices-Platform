@@ -3,7 +3,7 @@
 Tasks : Install Docker Desktop/Engine, Verify installation, Run hello-world, Pull Ubuntu image, Create a container, Enter the container, Create files and directories, Exit and restart the container, Use docker exec
 
 2. Create Your First Docker Image
-Tasks : Write a simple Java application, Create a Dockerfile, Build an image, Run a container, Remove image and container
+Tasks : Write a simple Java application,Create a jar, Create a Dockerfile, Build an image, Run a container, Remove image and container
 Concepts : Dockerfile, Image, Container
 
 3. Master Dockerfile Instructions
